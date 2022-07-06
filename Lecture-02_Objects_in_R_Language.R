@@ -14,7 +14,7 @@
 ################################################################################
 
 ### ****************************************************************************
-### Step-01. Obtain the gene ontology. 
+### Step-01. About working directory in R. 
 
 # For windows, work directory. 
 
@@ -22,11 +22,14 @@ pri.dir <- getwd()
 
 setwd("D:/00-GitHub/LRC/tmp/")
 
-# 1) Vector
+### ****************************************************************************
+### Step-02. About objects in R. 
+
+# 1) object and its attribute. 
+
+# 2) object and its type.
 
 
-library(XML)
-library(RCurl)
 
-url <- "http://www.knapsackfamily.com/knapsack_core/information.php?word=C00000001"
+
 
