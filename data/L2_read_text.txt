@@ -1,0 +1,5 @@
+Hi Vivek,
+Yes, all the material on TechVidvan is absolutely free for a lifetime.
+I hope our article on R Programming Language helped you to clear your concepts on R. 
+You can start your journey of R Programming Language with TechVidvan. 
+We are going to publish articles from basic tutorials to advanced practicals, case studies, applications, real-time projects, quizzes, and many more.
