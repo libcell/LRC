@@ -54,8 +54,13 @@ N <- matrix(c(3:14), nrow = 4, byrow = FALSE)
 print(N)
 
 # Define the column and row names.
-rownames = c("row1", "row2", "row3", "row4")
-colnames = c("col1", "col2", "col3")
+rownames  <- c("row1", "row2", "row3", "row4")
+colnames  <- c("col1", "col2", "col3")
+
+rownames(N) <- rownames
+colnames(N) <- colnames
+
+print(N)
 
 P <- matrix(c(3:14), nrow = 4, byrow = TRUE, dimnames = list(rownames, colnames))
 print(P)
@@ -104,12 +109,33 @@ row.names <- c("ROW1", "ROW2", "ROW3")
 matrix.names <- c("Matrix1", "Matrix2")
 
 # Take these vectors as input to the array.
-result <- array(c(vector1,vector2),dim = c(3,3,2),dimnames = list(row.names,column.names,
-                                                                  matrix.names))
+result <- array(c(vector1,vector2),dim = c(3,3,2),
+                dimnames = list(row.names,
+                                column.names, 
+                                matrix.names))
 print(result)
+
+# ====================================================
+
+x <- matrix(1:100, nrow = 10, byrow = TRUE)
+
+print(x)
+
+rownames(x) <- paste("row", 1:10, sep = "-")
+
+colnames(x) <- paste("col", 1:10, sep = "=")
+
+print(x)
 
 
 # 3) Accessing array elements. 
+
+print(result)
+
+result[1, 1, 1]
+
+result[1, 1, 2]
+
 
 # Create two vectors of different lengths.
 vector1 <- c(5,9,3)
@@ -119,8 +145,13 @@ row.names <- c("ROW1","ROW2","ROW3")
 matrix.names <- c("Matrix1","Matrix2")
 
 # Take these vectors as input to the array.
-result <- array(c(vector1,vector2),dim = c(3,3,2),dimnames = list(row.names,
-                                                                  column.names, matrix.names))
+result <-
+  array(
+    c(vector1, vector2),
+    dim = c(3, 3, 2),
+    dimnames = list(row.names,
+                    column.names, matrix.names)
+  )
 
 # Print the third row of the second matrix of the array.
 print(result[3,,2])
@@ -131,6 +162,81 @@ print(result[1,3,1])
 # Print the 2nd Matrix.
 print(result[,,2])
 
+## calculate
+
+x
+
+# 行平均值
+
+mean(x[1, ])
+mean(x[2, ])
+mean(x[3, ])
+
+help("apply")
+
+apply(x, 1, mean)
+
+apply(x, 2, mean)
+
+mean(x[, 1])
+mean(x[, 2])
+mean(x[, 3])
+mean(x[, 4])
+mean(x[, 5])
+mean(x[, 6])
+
+apply(x, 1, max)
+apply(x, 1, min)
+apply(x, 1, var)
+
+
 # 4) Image and array. 
+
+# install EBImage package
+
+install.packages("BiocManager")
+
+library(BiocManager)
+
+BiocManager::install("EBImage")
+
+library(EBImage)
+
+getwd()
+
+img <- readImage("D:/cqnu-logo.jpg")
+
+print(img)
+
+display(img)
+
+hist(img)
+
+str(img)
+
+img@.Data[, , 1][img@.Data[, , 1] < 0.5] <- 1
+
+img <- readImage("D:/cqnu-logo.jpg")
+
+img@.Data[, , 2][img@.Data[, , 2] < 0.5] <- 1
+
+img@.Data[1:100, 1:100, 1] <- 0
+img@.Data[1:100, 1:100, 2] <- 0.5
+img@.Data[1:100, 1:100, 3] <- 0.8
+
+display(img)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
