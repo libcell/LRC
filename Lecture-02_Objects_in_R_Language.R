@@ -206,5 +206,6 @@ y5
 options(prompt = "R>", continue = "++++++")
 
 (.packages())
+?hclust
 
 
