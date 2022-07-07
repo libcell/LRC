@@ -26,7 +26,6 @@ setwd("D:/00-GitHub/LRC/tmp/")
 ### Step-02. About objects in R. 
 
 # 1) object and its attribute. 
-
 # 2) object and its type.
 
 ### ****************************************************************************
@@ -46,6 +45,7 @@ setwd("D:/00-GitHub/LRC/tmp/")
 
 # 1) Generating matrix.  
 # 2) Accessing the matrix. 
+
 
 
 
