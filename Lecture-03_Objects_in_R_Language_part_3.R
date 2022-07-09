@@ -2,7 +2,7 @@
 ################################################################################
 #    &&&....&&&    % Lecture-02: Objects in R Environment                      #
 #  &&&&&&..&&&&&&  % Teacher: Bo Li, Mingwei Liu                               #
-#  &&&&&&&&&&&&&&  % Date: Jul. 06th, 2022                                     #
+#  &&&&&&&&&&&&&&  % Date: Jul. 08th, 2022                                     #
 #   &&&&&&&&&&&&   %                                                           #
 #     &&&&&&&&     % Environment: R version 4.1.1;                             #
 #       &&&&       % Platform: x86_64-w64-mingw32/x64 (64-bit)                 #
@@ -29,9 +29,9 @@ setwd("D:/00-GitHub/LRC/tmp/")
 
 # Create the data frame.
 emp.data <- data.frame(
-  emp_id = c (1:5), 
+  emp_id = c(1:5), 
   emp_name = c("Rick","Dan","Michelle","Ryan","Gary"),
-  salary = c(623.3,515.2,611.0,729.0,843.25), 
+  salary = c(623.3, 515.2, 611.0, 729.0, 843.25), 
   
   start_date = as.Date(c("2012-01-01", 
                          "2013-09-23", 
@@ -48,13 +48,21 @@ print(emp.data)
 str(emp.data)
 
 # Print the summary.
-print(summary(emp.data)) 
+summary(emp.data)
 
 # 2) Accessing the data frame. 
 
 # Extract Specific columns.
-result <- data.frame(emp.data$emp_name, emp.data$salary)
+result <- data.frame(emp.data$emp_name, 
+                     emp.data$salary)
 print(result)
+
+
+df <- data.frame(A = emp.data$emp_name, 
+                 B = emp.data$salary)
+
+df
+
 
 # Extract first two rows.
 result <- emp.data[1:2, ]
@@ -63,6 +71,11 @@ print(result)
 # Extract 3rd and 5th row with 2nd and 4th column.
 result <- emp.data[c(3, 5), c(2, 4)]
 print(result)
+
+class(result)
+
+# typeof(result)
+
 
 # 3) Edit the data frame. 
 
@@ -94,8 +107,10 @@ emp.newdata <- 	data.frame(
 )
 
 # Bind the two data frames.
-emp.finaldata <- rbind(emp.data,emp.newdata)
+emp.finaldata <- rbind(emp.data, emp.newdata)
 print(emp.finaldata)
+
+
 
 
 ### ****************************************************************************
