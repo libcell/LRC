@@ -204,7 +204,7 @@ library(EBImage)
 
 getwd()
 
-img <- readImage("D:/cqnu-logo.jpg")
+img <- readImage("D:/00-GitHub/LRC/data/cqnu-logo.jpg")
 
 print(img)
 

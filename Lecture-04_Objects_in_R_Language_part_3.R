@@ -122,14 +122,20 @@ print(emp.finaldata)
 
 # Create a list containing strings, numbers, vectors and a logical
 # values.
-list_data <- list("Red", "Green", c(21,32,11), TRUE, 51.23, 119.1)
+list_data <- list("Red", 
+                  "Green", 
+                  c(21,32,11), 
+                  TRUE, 
+                  51.23, 
+                  119.1)
 print(list_data)
 
 # 2) Naming List Elements.  
 
 # Create a list containing a vector, a matrix and a list.
-list_data <- list(c("Jan","Feb","Mar"), matrix(c(3,9,5,1,-2,8), nrow = 2),
-                  list("green",12.3))
+list_data <- list(c("Jan", "Feb", "Mar"),
+                  matrix(c(3, 9, 5, 1, -2, 8), nrow = 2),
+                  list("green", 12.3))
 
 # Give names to the elements in the list.
 names(list_data) <- c("1st Quarter", "A_Matrix", "A Inner list")
@@ -149,6 +155,16 @@ names(list_data) <- c("1st Quarter", "A_Matrix", "A Inner list")
 # Access the first element of the list.
 print(list_data[1])
 
+x <- list_data[1]
+
+class(x)
+
+print(list_data[[1]])
+
+y <- list_data[[1]]
+
+class(y)
+
 # Access the thrid element. As it is also a list, all its elements will be printed.
 print(list_data[3])
 
@@ -164,12 +180,31 @@ list_data <- list(c("Jan","Feb","Mar"), matrix(c(3,9,5,1,-2,8), nrow = 2),
 # Give names to the elements in the list.
 names(list_data) <- c("1st Quarter", "A_Matrix", "A Inner list")
 
+
+length(list_data)
+
+
+list_data$`1st Quarter`[3] <- "May"
+
+print(list_data)
+
+
 # Add element at the end of the list.
 list_data[4] <- "New element"
 print(list_data[4])
 
+list_data
+
+names(list_data)[4] <- "New"
+
+list_data
+
 # Remove the last element.
 list_data[4] <- NULL
+
+list_data
+
+length(list_data)
 
 # Print the 4th Element.
 print(list_data[4])
@@ -178,18 +213,22 @@ print(list_data[4])
 list_data[3] <- "updated element"
 print(list_data[3])
 
+list_data
+
 # 5) Merging Lists. 
 
 # Create two lists.
-list1 <- list(1,2,3)
-list2 <- list("Sun","Mon","Tue")
+list1 <- list(1, 2, 3)
+
+list2 <- list("Sun", "Mon", "Tue")
 
 # Merge the two lists.
-merged.list <- c(list1,list2)
+merged.list <- c(list1, list2)
 
 # Print the merged list.
 print(merged.list)
 
+class(merged.list)
 
 # 6) Converting List to Vector. 
 
@@ -199,6 +238,8 @@ print(list1)
 
 list2 <-list(10:14)
 print(list2)
+
+class(list1)
 
 # Convert the lists to vectors.
 v1 <- unlist(list1)
@@ -219,8 +260,20 @@ print(result)
 
 # Create the list.
 
+dat <- read.delim("clipboard", header = TRUE)
+
+print(dat)
 
 
+score <- read.csv("../data/L2_simulated_student_score.csv", header = TRUE)
 
+dim(score)
 
+head(score)
+tail(score)
 
+print(score)
+
+write.csv(score, file = "F:/new_score.csv")
+
+# read.table(file = choose(), header = TRUE)
