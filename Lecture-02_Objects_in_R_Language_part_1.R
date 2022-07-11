@@ -1,8 +1,8 @@
 
 ################################################################################
-#    &&&....&&&    % Lecture-02: Objects in R Environment                      #
+#    &&&....&&&    % Learning R Course in Summer, teached by Bo Li             #
 #  &&&&&&..&&&&&&  % Teacher: Bo Li, Mingwei Liu                               #
-#  &&&&&&&&&&&&&&  % Date: Jul. 06th, 2022                                     #
+#  &&&&&&&&&&&&&&  % Date: Jul. 05th, 2022                                     #
 #   &&&&&&&&&&&&   %                                                           #
 #     &&&&&&&&     % Environment: R version 4.1.1;                             #
 #       &&&&       % Platform: x86_64-w64-mingw32/x64 (64-bit)                 #

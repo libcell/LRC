@@ -1,6 +1,6 @@
 
 ################################################################################
-#    &&&....&&&    % Lecture-01: Installing & Running R Language               #
+#    &&&....&&&    % Learning R Course in Summer of 2022                       #
 #  &&&&&&..&&&&&&  % Teacher: Bo Li, Mingwei Liu                               #
 #  &&&&&&&&&&&&&&  % Date: Jul. 05th, 2022                                     #
 #   &&&&&&&&&&&&   %                                                           #
@@ -10,11 +10,48 @@
 ################################################################################
 
 ################################################################################
-### code chunk number 01: Understanding the data objects and their structure.
+### code chunk number 01: Installing & Running R Language.
 ################################################################################
 
 ### ****************************************************************************
-### Step-01. About working directory in R. 
+### Step-01. Installing R Software. 
+
+# 1) Choosing the CRAN Mirror. 
+
+# For windows. 
+# 官方地址：https://cloud.r-project.org/bin/windows/base/
+# TUNA 镜像：https://mirrors.tuna.tsinghua.edu.cn/CRAN/bin/windows/base/
+# USTC 镜像：https://mirrors.ustc.edu.cn/CRAN/bin/windows/base/
+
+# For Linux. 
+# 官方地址：https://cloud.r-project.org/bin/linux/
+# TUNA 镜像：https://mirrors.tuna.tsinghua.edu.cn/CRAN/bin/linux/
+# USTC 镜像：https://mirrors.ustc.edu.cn/CRAN/bin/linux/
+
+#  For MacOS. 
+
+# 官方地址：https://cloud.r-project.org/bin/macosx/
+# TUNA 镜像：https://mirrors.tuna.tsinghua.edu.cn/CRAN/bin/macosx/
+# USTC 镜像：https://mirrors.ustc.edu.cn/CRAN/bin/macosx/
+
+# 2) Installing R Software. 
+
+# (i) For Ubuntu version (Linux).
+# Using the following shell script.
+# sudo apt update
+# sudo apt -y upgrade
+# sudo apt -y install r-base
+
+# (i) For CentOS version (Linux).
+# Using the following shell script.
+# sudo yum install R
+# R --version
+
+### End of Step-01.
+### ****************************************************************************
+
+### ****************************************************************************
+### Step-02. About working directory in R. 
 
 # For windows, work directory. 
 
@@ -22,35 +59,19 @@ pri.dir <- getwd()
 
 setwd("D:/00-GitHub/LRC/tmp/")
 
+### End of Step-02.
 ### ****************************************************************************
-### Step-02. Edit the first script in R. 
 
-# 1) object and its attribute. 
+### ****************************************************************************
+### Step-03. Edit the first script in R. 
 
 myString <- "Hello, World!"
 
 print ( myString )
 
-# 2) object and its type.
-
+### End of Step-03.
 ### ****************************************************************************
-### Step-03. About vector in R. 
-
-# 1) Generating vectors. 
-# 2) vector
-
-### ****************************************************************************
-### Step-04. About matrix in R. 
-
-# 1) Generating matrix.  
-# 2) Accessing the matrix. 
-
-### ****************************************************************************
-### Step-05. About matrix in R. 
 
 ################################################################################
 ### End of chunk-01.
 ################################################################################
-
-
-
