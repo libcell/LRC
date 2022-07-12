@@ -14,22 +14,7 @@
 ################################################################################
 
 ### ****************************************************************************
-### Step-01. Installing R Software. 
-
-# 1) Choosing the CRAN Mirror. 
-
-# For windows. 
-
-
-# 2) Installing R Software. 
-
-# (i) For Ubuntu version (Linux).
-
-### End of Step-01.
-### ****************************************************************************
-
-### ****************************************************************************
-### Step-02. About working directory in R. 
+### Step-01. About working directory in R. 
 
 # For windows, work directory. 
 
@@ -37,17 +22,62 @@ pri.dir <- getwd()
 
 setwd("D:/00-GitHub/LRC/tmp/")
 
+### End of Step-01.
+### ****************************************************************************
+
+### ****************************************************************************
+### Step-02. Reading and writing CSV format files. 
+
+# 1) Reading the CSV files. 
+
+
+# 2) Writing the CSV files. 
+
 ### End of Step-02.
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-03. Edit the first script in R. 
+### Step-03. Reading and writing TXT format files. 
 
-myString <- "Hello, World!"
+# 1) Reading the TXT files. 
 
-print ( myString )
+
+# 2) Writing the TXT files. 
 
 ### End of Step-03.
+### ****************************************************************************
+
+### ****************************************************************************
+### Step-04. Reading and writing xlsx format files. 
+
+# 1) Reading the xlsx files. 
+
+
+# 2) Writing the xlsx files. 
+
+### End of Step-04.
+### ****************************************************************************
+
+### ****************************************************************************
+### Step-05. Reading and writing XML format files. 
+
+# 1) Reading the XML files. 
+
+
+# 2) Writing the XML files. 
+
+### End of Step-05.
+### ****************************************************************************
+
+### ****************************************************************************
+### Step-06. Reading and writing json format files. 
+
+# 1) Reading the json files. 
+
+
+# 2) Writing the json files. 
+
+### End of Step-06.
 ### ****************************************************************************
 
 ################################################################################
