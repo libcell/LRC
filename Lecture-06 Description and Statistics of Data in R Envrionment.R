@@ -26,25 +26,74 @@ setwd("D:/00-GitHub/LRC/tmp/")
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-02. Reading and writing CSV format files. 
+### Step-02. mean(), median(). 
 
-# 1) Reading the CSV files. 
+# 1) Mean. 
 
-x <- read.csv("iris.csv", header = TRUE)
+x <- c(1:10)
+
+av <- mean(x)
+
+print(av)
+
+x[3] <- NA
+
 print(x)
 
-# 2) Writing the CSV files. 
+av1 <- mean(x, na.rm = TRUE)
 
+print(av1)
+
+?mean # remove
+
+# 2) Median. 
+
+mv <- median(x)
+
+print(mv)
+
+# 3) fivenum
+
+x <- 1:10
+
+fivenum(x)
+
+summary(x)
+
+# 4) var, sd
+
+var(x)
+
+x1 <- var(x)
+
+x1^0.5
+
+sd(x)
+
+# 5) data distribution
+
+x <- 1:1000
+
+hist(x)
+
+x1 <- rnorm(1000, mean = 5, sd = 1)
+
+mean(x1); sd(x1); var(x1)
+
+hist(x1, breaks = 100)
 
 ### End of Step-02.
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-03. Reading and writing TXT format files. 
+### Step-03. Skewness and kurtosis. 
 
-# 1) Reading the TXT files. 
+# 1) Installing the related R package. 
 
-# 2) Writing the TXT files. 
+install.packages("fBasics")
+
+# 2) Computing the statistics.
+
 
 ### End of Step-03.
 ### ****************************************************************************
