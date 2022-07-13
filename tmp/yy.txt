@@ -1,0 +1,121 @@
+$exp_param
+$exp_param$experiments_dir
+[1] "/path/to/the/directory/where/to/save/everything"
+
+$exp_param$GPU
+[1] 0
+
+
+$experiments
+$experiments$name_your_experiment
+$experiments$name_your_experiment$input_ds
+$experiments$name_your_experiment$input_ds$clustering
+$experiments$name_your_experiment$input_ds$clustering$res
+[1] 0.15
+
+
+$experiments$name_your_experiment$input_ds$filtering
+$experiments$name_your_experiment$input_ds$filtering$min_cells
+[1] 3
+
+$experiments$name_your_experiment$input_ds$filtering$min_genes
+[1] 10
+
+
+$experiments$name_your_experiment$input_ds$raw_input
+[1] "/path/to/the/directory/containing/the/raw/data.h5ad"
+
+$experiments$name_your_experiment$input_ds$scale
+[1] "normalize_per_cell_LS_20000"
+
+$experiments$name_your_experiment$input_ds$split
+$experiments$name_your_experiment$input_ds$split$balanced_split
+[1] TRUE
+
+$experiments$name_your_experiment$input_ds$split$split_seed
+[1] "default"
+
+$experiments$name_your_experiment$input_ds$split$test_cells
+[1] 0
+
+$experiments$name_your_experiment$input_ds$split$valid_cells
+[1] 2000
+
+
+
+$experiments$name_your_experiment$training
+$experiments$name_your_experiment$training$max_steps
+[1] 1e+06
+
+$experiments$name_your_experiment$training$learning_rate
+$experiments$name_your_experiment$training$learning_rate$decay
+[1] TRUE
+
+$experiments$name_your_experiment$training$learning_rate$alpha_0
+[1] 1e-04
+
+$experiments$name_your_experiment$training$learning_rate$alpha_final
+[1] 1e-05
+
+
+$experiments$name_your_experiment$training$optimizer
+$experiments$name_your_experiment$training$optimizer$algorithm
+[1] "AMSGrad"
+
+$experiments$name_your_experiment$training$optimizer$beta1
+[1] 0.5
+
+$experiments$name_your_experiment$training$optimizer$beta2
+[1] 0.9
+
+
+$experiments$name_your_experiment$training$batch_size
+[1] 128
+
+$experiments$name_your_experiment$training$critic_iters
+[1] 5
+
+$experiments$name_your_experiment$training$checkpoint
+NULL
+
+$experiments$name_your_experiment$training$progress_freq
+[1] 10
+
+$experiments$name_your_experiment$training$validation_freq
+[1] 1000
+
+$experiments$name_your_experiment$training$save_freq
+[1] 1000
+
+$experiments$name_your_experiment$training$summary_freq
+[1] 50
+
+
+$experiments$name_your_experiment$model
+$experiments$name_your_experiment$model$type
+[1] "cscGAN"
+
+$experiments$name_your_experiment$model$latent_dim
+[1] 128
+
+$experiments$name_your_experiment$model$output_LSN
+[1] 20000
+
+$experiments$name_your_experiment$model$critic_layers
+[1] 1024  512  256
+
+$experiments$name_your_experiment$model$gen_layers
+[1]  256  512 1024
+
+$experiments$name_your_experiment$model$critic_cond_type
+[1] "proj"
+
+$experiments$name_your_experiment$model$gen_cond_type
+[1] "batchnorm"
+
+$experiments$name_your_experiment$model$lambd
+[1] 10
+
+
+
+
