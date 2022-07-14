@@ -10,7 +10,7 @@
 ################################################################################
 
 ################################################################################
-### code chunk number 05: Installing & Running R Language.
+### code chunk number 07: Installing & Running R Language.
 ################################################################################
 
 ### ****************************************************************************
@@ -26,99 +26,23 @@ setwd("D:/00-GitHub/LRC/tmp/")
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-02. mean(), median(). 
+### Step-02. Simulating a gene expression matrix. 
 
 # 1) Mean. 
 
-x <- c(1:10)
-
-av <- mean(x)
-
-print(av)
-
-x[3] <- NA
-
-print(x)
-
-av1 <- mean(x, na.rm = TRUE)
-
-print(av1)
-
-?mean # remove
-
 # 2) Median. 
-
-mv <- median(x)
-
-print(mv)
 
 # 3) fivenum
 
-x <- 1:10
-
-fivenum(x)
-
-summary(x)
-
 # 4) var, sd
-
-var(x)
-
-x1 <- var(x)
-
-x1^0.5
-
-sd(x)
 
 # 5) data distribution
 
-x <- 1:1000
-
-hist(x)
-
-x1 <- rnorm(1000, mean = 5, sd = 1)
-
-mean(x1); sd(x1); var(x1)
-
-hist(x1, breaks = 100) # 直方图
-
-hist(x1, breaks = 30, probability = TRUE)
-
-lines(density(x1), col = "red", lwd = 3)
 
 ### End of Step-02.
 ### ****************************************************************************
 
-x1
-
-quantile(x1)
-median(x1)
-
-quantile(x1)[3] == median(x1)
-
-boxplot(x1) # 触须
-
-quantile(x1, 0.75) - quantile(x1, 0.25) # !!!
-
-IQR(x1)
-
-range(x1)
-
-# 
-
-e <- c(2.1, 2.0, 1.9, 4.5, 2.2, 2.3, 1.89, 23, 2.0, 2.01)
-
-te1 <- mean(e)
-
-te2 <- median(e)
-
-te3 <- mean(e[c(-4, -8)])
-
-print(te3)
-
-boxplot(e)
-
-
+ 
 ### ****************************************************************************
 ### Step-03. Skewness and kurtosis. 
 
