@@ -28,13 +28,15 @@ setwd("D:/00-GitHub/LRC/tmp/")
 ### ****************************************************************************
 ### Step-02. Simulating a gene expression matrix. 
 
-# 1) Mean. 
+# 1) Simulating a GEM showing expression levels of 2000 genes in 100 samples. 
 
-# 2) Median. 
 
-# 3) fivenum
 
-# 4) var, sd
+# 2) . 
+
+# 3) 
+
+# 4) 
 
 # 5) data distribution
 
@@ -50,6 +52,14 @@ setwd("D:/00-GitHub/LRC/tmp/")
 
 install.packages("fBasics")
 
+library(fBasics)
+
+skewness(iris[, -5])
+
+kurtosis(iris[, -5])
+
+
+
 # 2) Computing the statistics.
 
 
@@ -59,17 +69,17 @@ install.packages("fBasics")
 ### ****************************************************************************
 ### Step-04. Reading and writing xlsx format files. 
 
-# 1) Reading the xlsx files. 
+# 1) . 
 
 
-# 2) Writing the xlsx files. 
+# 2) . 
 
 
 ### End of Step-04.
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-05. Reading and writing XML format files. 
+### Step-05. . 
 
 # 1) Reading the XML files. 
 
@@ -80,7 +90,7 @@ install.packages("fBasics")
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-06. Reading and writing json format files. 
+### Step-06. . 
 
 # 1) Reading the json files. 
 
