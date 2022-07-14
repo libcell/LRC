@@ -30,6 +30,7 @@ setwd("D:/00-GitHub/LRC/tmp/")
 
 # 1) Simulating a GEM showing expression levels of 2000 genes in 100 samples. 
 
+# 随机生成200000个数值，这些数值来自均值为8标准差为2的正态分布
 gem <- rnorm(2000*100, mean = 8, sd = 2)
 
 length(gem)
@@ -42,130 +43,36 @@ dim(gem)
 
 head(gem)
 
+# 2) Naming the data distribution.  
+
 rownames(gem) <- paste("mRNA", 1:2000, sep = "-")
 
 colnames(gem) <- paste("sample", 1:100, sep = "-")
 
 head(gem)
 
-# 2) Checking the data distribution.  
-
-# 3) Computing the general statistics. 
-
-gem["mRNA-1", ]
-
-gem[, "sample-1"]
-
-gem["mRNA-1", "sample-1"]
-
-gem[1, 1]
-
-# 1) average value of gene-1. 
-
-mean(gem[1, ])
-mean(gem["mRNA-1", ])
-
-range(gem["mRNA-1", ])
-
-summary(gem["mRNA-1", ])
-
-# 2) correlation
-
-r.value <- cor(gem)
-
-dim(r.value)
-
-head(r.value)
-
-cov(gem)
-
-# 4) Normalizing the data. 
-
-library(DT)
-
-datatable(gem)
-
-datatable(iris)
-
-boxplot(iris[, -5], col = 2:5)
-
-boxplot(scale(iris[, -5]), col = 2:5)
-
-# centering, 
-
-S1 <- runif(26, min = 20, max = 80) # random sampling 
-S1 <- round(S1)
-names(S1) <- LETTERS
-print(S1)
-
-S2 <- runif(20, min = 50, max = 100) # random sampling 
-S2 <- round(S2)
-names(S2) <- letters[1:20]
-print(S2)
-
-mean(S1)
-mean(S2)
-
-S1
-S2
-
-# D vs. d
-
-D <- 68
-d <- 77
-
-op <- par(mfrow = c(1, 2))
-boxplot(S1)
-boxplot(S2)
-par(op)
-
-D1 <- 68 - mean(S1)
-d1 <- 77 - mean(S2)
-
-D1
-d1
-
-D2 <- (68 - mean(S1))/sd(S1)
-d2 <- (77 - mean(S2))/sd(S2)
-D2
-d2
-
-# 归一化
-
-D3 <- ((68 - min(S1))/(max(S1) - min(S1)))*100 
-d3 <- ((77 - min(S2))/(max(S2) - min(S2)))*100 
-
-D3
-d3
-
-# S1
-
-# 5) Visualizing the data. 
-
 ### End of Step-02.
 ### ****************************************************************************
 
- 
 ### ****************************************************************************
-### Step-03. Skewness and kurtosis. 
+### Step-03. Checking the distribution of gene expression data. 
 
-# 1) Installing the related R package. 
+# 1) Installing and loading the related R package. 
 
-install.packages("fBasics")
+# install.packages("fBasics")
 
 library(fBasics)
 
-skewness(iris[, -5])
 
-kurtosis(iris[, -5])
+# 2) Computing the statistics, skewness and kurtosis.
 
-# 2) Computing the statistics.
+gem1 <- as.data.frame(gem)
 
+skewness(gem1)
 
-### End of Step-03.
-### ****************************************************************************
+kurtosis(gem1)
 
-
+# 3) Generating the histogram and fitting lines. 
 
 dim(gem)
 
@@ -180,41 +87,62 @@ lines(density(g1), col = "red", lwd = 3)
 lines(density(g2), col = "green", lwd = 3)
 lines(density(g3), col = "blue", lwd = 3)
 
+# 4） Another way for step-3. 
+
+
+op <- par(mfrow = c(1, 2))
+
 hist(gem, breaks = 20, probability = TRUE, ylim = c(0, .25))
 
 for (i in 1:10) {
   lines(density(gem[i, ]), col = rainbow(10)[i], lwd = 2)
 }
 
-
 boxplot(gem[, 1:10], col = 1:10)
 
+par(op)
 
-# par(mfrow = c(1, 1))
-
-
+### End of Step-03.
+### **************************************************************************** 
 
 ### ****************************************************************************
-### Step-04. Understanding the types of data. 
+### Step-04. Understanding centering and scaling for datasets in bio-medicine. 
 
-# 1) Continuous data 
+# 1) Taking the iris score analysis for two classes as the example.
 
+set.seed(714)
 
-# 2) Discrete data 
+S1 <- runif(26, min = 20, max = 80)
 
+S2 <- runif(20, min = 50, max = 100)
+
+S1 <- round(S1);  S2 <- round(S2)
+
+names(S1) <- LETTERS
+
+names(S2) <- letters[1:20]
+
+# 2) Comparing the score of student D in class-1 and student d in class-2. 
+
+D1 <- S1["D"]
+d1 <- S2["d"]
+D1 > d1
+
+D2 <- D1 - mean(S1)
+d2 <- d1 - mean(S2)
+D2 > d2
+
+D3 <- (D1 - mean(S1)) / sd(S1) 
+d3 <- (d1 - mean(S2)) / sd(S2) 
+D3 > d3
+
+D4 <- ((D1 - min(S1)) / (max(S1) - min(S1))) * 100
+d4 <- ((d1 - min(S2)) / (max(S2) - min(S2))) * 100
+D4 > d4
+
+# 3) Which one is the best way to compare the score between student D and d?
 
 ### End of Step-04.
-### ****************************************************************************
-
-### ****************************************************************************
-### Step-05. Data visualization of gene expression data.  
-
-# 1) Reading the XML files. 
-
-
-# 2) Writing the XML files. 
-
-### End of Step-05.
 ### ****************************************************************************
 
 ################################################################################
