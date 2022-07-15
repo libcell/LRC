@@ -118,14 +118,64 @@ DT::datatable(gem1)
 ### ****************************************************************************
 ### Step-04. Family of apply functions. 
 
-# 1) apply. 
+# 1) 向量化操作
 
+a <- 1:4
+b <- 5:10
+
+a + 1
+b + 1
+
+a + b
+
+# 2) apply. 
+
+dim(gem1)
+
+class(gem1)
+
+gem2 <- as.matrix(gem1)
+
+gem2[1:10, 1:6]
+
+mean(gem2[1, ])
+mean(gem2[2, ])
+mean(gem2[200, ])
+
+m <- apply(gem2, 1, mean)
+print(m)
+
+ma <- apply(gem2, 1, max)
+print(ma)
+
+s <- apply(gem2, 2, mean)
+print(s)
 
 # 2) lapply.
 
+print(iris)
+iris_list <- as.list(iris)
+iris_list
+length(iris_list)
+
+iris2 <- as.list(iris[, -5])
+iris2
+
+class(iris2)
+
+g <- lapply(iris2, mean)
+
+class(g)
+
+# lapply(gem2, mean) # warning!
 
 # 3) sapply. 
 
+g1 <- sapply(iris2, mean)
+
+class(g1)
+
+g1
 
 ### End of Step-04.
 ### **************************************************************************** 
@@ -145,26 +195,28 @@ cumsum(list(1, 2, 3))
 
 # 2) Using parallel. 
 
-library(parallel)
-
-parallel::detectCores()
-
-lapply(1:3, function(x) c(x, x ^ 2, x ^ 3))
-
-
 library(parallel) # 载入parallel包
 
 # 计算可用线程数，并设置并行使用线程数
+
 no_cores <- detectCores() - 1
 
 # 初始化
 cl <- makeCluster(no_cores)
 
 # 修改原本我们lapply()的命令：
-parLapply(cl, 1:3, function(x) c(x, x ^ 2, x ^ 3))
 
+gem3 <- as.list(gem1)
+
+length(gem3)
+
+parLapply(cl, gem3, mean)
 
 stopCluster(cl)
+
+
+system.time(lapply(gem3, mean))
+
 
 
 # 3) Rmpi
