@@ -31,25 +31,10 @@ setwd("D:/00-GitHub/LRC/tmp/")
 # 1) Simulating a GEM showing expression levels of 2000 genes in 100 samples. 
 
 # 随机生成200000个数值，这些数值来自均值为8标准差为2的正态分布
-gem <- rnorm(2000*100, mean = 8, sd = 2)
 
-length(gem)
-
-is.matrix(gem)
-
-gem <- matrix(gem, nrow = 2000)
-
-dim(gem)
-
-head(gem)
 
 # 2) Naming the data distribution.  
 
-rownames(gem) <- paste("mRNA", 1:2000, sep = "-")
-
-colnames(gem) <- paste("sample", 1:100, sep = "-")
-
-head(gem)
 
 ### End of Step-02.
 ### ****************************************************************************
@@ -57,90 +42,71 @@ head(gem)
 ### ****************************************************************************
 ### Step-03. Family of apply functions. 
 
-# 1) Installing and loading the related R package. 
-
-# install.packages("fBasics")
-
-library(fBasics)
+# 1) apply. 
 
 
-# 2) Computing the statistics, skewness and kurtosis.
-
-gem1 <- as.data.frame(gem)
-
-skewness(gem1)
-
-kurtosis(gem1)
-
-# 3) Generating the histogram and fitting lines. 
-
-dim(gem)
-
-g1 <- gem[1, ]
-g2 <- gem[2, ]
-g3 <- gem[3, ]
-g4 <- gem[4, ]
-
-hist(gem, breaks = 20, probability = TRUE, ylim = c(0, .25))
-
-lines(density(g1), col = "red", lwd = 3)
-lines(density(g2), col = "green", lwd = 3)
-lines(density(g3), col = "blue", lwd = 3)
-
-# 4） Another way for step-3. 
+# 2) lapply.
 
 
-op <- par(mfrow = c(1, 2))
+# 3) sapply. 
 
-hist(gem, breaks = 20, probability = TRUE, ylim = c(0, .25))
-
-for (i in 1:10) {
-  lines(density(gem[i, ]), col = rainbow(10)[i], lwd = 2)
-}
-
-boxplot(gem[, 1:10], col = 1:10)
-
-par(op)
 
 ### End of Step-03.
 ### **************************************************************************** 
 
 ### ****************************************************************************
-### Step-04. Parallelly Computing. . 
+### Step-04. Parallel Computing. . 
 
-# 1) Taking the iris score analysis for two classes as the example.
+# 1) Using Reduce function.
 
-set.seed(714)
+add <- function(x) Reduce("+", x)
+add(list(1, 2, 3))
 
-S1 <- runif(26, min = 20, max = 80)
+add_accuml <- function(x) Reduce("+", x, accumulate = TRUE)
+add_accuml(list(1, 2, 3))
 
-S2 <- runif(20, min = 50, max = 100)
+cumsum(list(1, 2, 3))
 
-S1 <- round(S1);  S2 <- round(S2)
+# 2) Using parallel. 
 
-names(S1) <- LETTERS
+library(parallel)
 
-names(S2) <- letters[1:20]
+parallel::detectCores()
 
-# 2) Comparing the score of student D in class-1 and student d in class-2. 
+lapply(1:3, function(x) c(x, x ^ 2, x ^ 3))
 
-D1 <- S1["D"]
-d1 <- S2["d"]
-D1 > d1
 
-D2 <- D1 - mean(S1)
-d2 <- d1 - mean(S2)
-D2 > d2
+library(parallel) # 载入parallel包
 
-D3 <- (D1 - mean(S1)) / sd(S1) 
-d3 <- (d1 - mean(S2)) / sd(S2) 
-D3 > d3
+# 计算可用线程数，并设置并行使用线程数
+no_cores <- detectCores() - 1
 
-D4 <- ((D1 - min(S1)) / (max(S1) - min(S1))) * 100
-d4 <- ((d1 - min(S2)) / (max(S2) - min(S2))) * 100
-D4 > d4
+# 初始化
+cl <- makeCluster(no_cores)
 
-# 3) Which one is the best way to compare the score between student D and d?
+# 修改原本我们lapply()的命令：
+parLapply(cl, 1:3, function(x) c(x, x ^ 2, x ^ 3))
+
+
+stopCluster(cl)
+
+
+# 3) Rmpi
+
+# 加载 R 包
+library(Rmpi)
+# 检测可用的逻辑 CPU 核心数
+parallel::detectCores()
+# 虚拟机分配四个逻辑CPU核 
+# 1个 master 2个 worker 主机 cloud
+mpi.spawn.Rslaves(nslaves = 2)
+
+# 调用 mpi.apply 函数
+set.seed(1234)
+mpi.apply(c(10, 20), runif)
+
+# 用完要关闭
+mpi.close.Rslaves()
 
 ### End of Step-04.
 ### ****************************************************************************
