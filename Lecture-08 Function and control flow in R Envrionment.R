@@ -185,13 +185,13 @@ g1
 
 # 1) Using Reduce function.
 
-add <- function(x) Reduce("+", x)
-add(list(1, 2, 3))
-
-add_accuml <- function(x) Reduce("+", x, accumulate = TRUE)
-add_accuml(list(1, 2, 3))
-
-cumsum(list(1, 2, 3))
+#. add <- function(x) Reduce("+", x)
+#. add(list(1, 2, 3))
+#. 
+#. add_accuml <- function(x) Reduce("+", x, accumulate = TRUE)
+#. add_accuml(list(1, 2, 3))
+#. 
+#. cumsum(list(1, 2, 3))
 
 # 2) Using parallel. 
 
