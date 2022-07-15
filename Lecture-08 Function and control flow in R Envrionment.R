@@ -26,15 +26,96 @@ setwd("D:/00-GitHub/LRC/tmp/")
 ### ****************************************************************************
 
 ### ****************************************************************************
+### Step-02. Common functions in R.  
+
+# 1) 生成向量x
+x <- rnorm(100, mean = 0, sd = 2)
+
+print(x)
+
+# 2) 数学函数
+
+abs(-10)
+
+abs_x <- abs(x)
+
+print(abs_x)
+
+
+round(x)
+ceiling(x)
+floor(x)
+
+?round
+round(x, digits = 2)
+
+y <- sin(x)
+y
+
+plot(x, y) # 
+
+# 3) 统计函数
+
+mean(x)
+median(x)
+max(x)
+min(x)
+range(x)
+sum(x)
+
+cumsum(x)
+
+quantile(x, seq(from = 0, to = 1, len = 10))
+
+# 4) 概率函数
+
+# 正态分布
+norm
+
+rnorm(n = 10, mean = 0, sd = 1)
+qnorm(p = (1:5)/10, mean = 0, sd = 1)
+pnorm((1:5)/10)
+dnorm((1:5)/10)
+
+plot(dnorm((1:5)/10))
+
+### End of Step-02.
+### ****************************************************************************
+
+
+
+
+
+
+### ****************************************************************************
 ### Step-02. Common functions in R. 
 
 # 1) Simulating a GEM showing expression levels of 2000 genes in 100 samples. 
 
-# 随机生成200000个数值，这些数值来自均值为8标准差为2的正态分布
+# 随机生成20000个数值，这些数值来自均值为8标准差为8的正态分布
 
+gem <- rnorm(n = 200*100, mean = 8, sd = 8)
+
+gem <- matrix(gem, nrow = 200)
+
+class(gem)
+
+gem <- as.data.frame(gem)
+
+class(gem)
 
 # 2) Naming the data distribution.  
 
+rownames(gem) <- paste("gene", 1:200, sep = "-")
+colnames(gem) <- paste("sample", 1:100, sep = "-")
+
+DT::datatable(gem)
+
+gem1 <- round(gem, digits = 2)
+
+class(gem1)
+
+DT::datatable(gem1)
 
 ### End of Step-02.
 ### ****************************************************************************
@@ -110,6 +191,8 @@ mpi.close.Rslaves()
 
 ### End of Step-04.
 ### ****************************************************************************
+
+setwd(pri.dir)
 
 ################################################################################
 ### End of chunk-01.
