@@ -70,7 +70,6 @@ quantile(x, seq(from = 0, to = 1, len = 10))
 # 4) 概率函数
 
 # 正态分布
-norm
 
 rnorm(n = 10, mean = 0, sd = 1)
 qnorm(p = (1:5)/10, mean = 0, sd = 1)
