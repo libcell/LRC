@@ -13,8 +13,8 @@ PS: All artificial datasets used to evaluate the performance of gene selection m
 | :--- | :--- | :----: | ----: |
 | 1 | Chapter-1. Introduction on R | 1 | 1 |
 | 2 | Chapter-2. Data objects, importing & exporting | 2 | 4 |
-| 3 | Chapter-1. Introduction on R | 4 | 6 |
-| 4 | Chapter-1. Introduction on R | 3 | 3 |
-| 5 | Chapter-1. Introduction on R | 4 | 6 |
-| 6 | Chapter-1. Introduction on R | 2 | 6 |
-| 7 | Chapter-1. Introduction on R | 2 | 4 |
+| 3 | Chapter-3. Data pre-processing in R | 4 | 6 |
+| 4 | Chapter-4. Function & control flow | 3 | 3 |
+| 5 | Chapter-5. ABC of statistical imaging in R | 4 | 6 |
+| 6 | Chapter-6. Advanced statistical imaging in R | 2 | 6 |
+| 7 | Chapter-7. Data visualization and rattle in R | 2 | 4 |
