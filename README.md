@@ -11,7 +11,7 @@ This is the ***Cover Page*** of this course (drawn by *Dr*. Liu)
 
 **Course online**: if you want to playback of classroom lecture videos, please click [数据科学: R入门与进阶](http://course.cloudwe.tech/node/106)
 
-<font color = "#DD0000">浅黄色</font><br/>
+<font color = "#006600">xxx</font><br/>
 
 **Note**: there are 48 class-hours for this curriculum, and the detailed information on time allocation is as follows: 
 
