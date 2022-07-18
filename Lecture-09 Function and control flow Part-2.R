@@ -26,214 +26,173 @@ setwd("D:/00-GitHub/LRC/tmp/")
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-02. Common functions in R.  
+### Step-02. Expression in R. 
 
-# 1) 生成向量x
-x <- rnorm(100, mean = 0, sd = 2)
+# 任何一个语句都可以看成是一个表达式。 
+# 表达式之间以分号分隔或用换行分隔。
 
-print(x)
+# 1) the first form
 
-# 2) 数学函数
+{x <- 15; x}
 
-abs(-10)
+# 2) the second form
 
-abs_x <- abs(x)
+{
+  x <- 15
+  x
+}
 
-print(abs_x)
+# 3) the third form
+
+{
+  x <- 15
+  print(x) # not return!!!
+}
 
 
-round(x)
-ceiling(x)
-floor(x)
+# 3) using expression in plot
 
-?round
-round(x, digits = 2)
-
-y <- sin(x)
-y
-
-plot(x, y) # 
-
-# 3) 统计函数
-
-mean(x)
-median(x)
-max(x)
-min(x)
-range(x)
-sum(x)
-
-cumsum(x)
-
-quantile(x, seq(from = 0, to = 1, len = 10))
-
-# 4) 概率函数
-
-# 正态分布
-
-rnorm(n = 10, mean = 0, sd = 1)
-qnorm(p = (1:5)/10, mean = 0, sd = 1)
-pnorm((1:5)/10)
-dnorm((1:5)/10)
-
-plot(dnorm((1:5)/10))
+curve((x^3 + x^2 + x + 1), -10, 10, bty="l", xlab="x1", ylab="y")
+abline(h=0, v=0, lty=2, col="gray")
+text(0.5, -0.5, "0", col="gray")
+text(8, 10, "y = x")
 
 ### End of Step-02.
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-03. Simulating a gene expression matirx in R. 
+### Step-03. branch structure in R. 
 
-# 1) Simulating a GEM showing expression levels of 2000 genes in 100 samples. 
+# 1) 分支结构包括if结构：
 
-# 随机生成20000个数值，这些数值来自均值为8标准差为8的正态分布
+# 比如：
+# if (条件) 表达式1
+# 或
+# if (条件) 表达式1 else 表达式2
 
-gem <- rnorm(n = 200*100, mean = 8, sd = 8)
+# 2) 其中的“条件”为一个标量的真或假值, 不允许取缺失值， 如
 
-gem <- matrix(gem, nrow = 200)
+if(is.na(lambda)) lambda <- 0.5
 
-class(gem)
+# 3) Examples: 
 
-gem <- as.data.frame(gem)
+# A: Eg1. 
 
-class(gem)
+if (x>1) {
+  y <- 2.5
+} else {
+  y <- -y
+}
 
-# 2) Naming the data distribution.  
+# B: Eq2. 
 
-rownames(gem) <- paste("gene", 1:200, sep = "-")
-colnames(gem) <- paste("sample", 1:100, sep = "-")
-
-DT::datatable(gem)
-
-gem1 <- round(gem, digits = 2)
-
-class(gem1)
-
-DT::datatable(gem1)
+x <- c(0.05, 0.6, 0.3, 0.9)
+for (i in seq(along = x)) {
+  if (x[i] <= 0.2) {
+    cat("Small\n")
+  } else if (x[i] <= 0.8) {
+    cat("Medium\n")
+  } else {
+    cat("Large\n")
+  }
+}
 
 ### End of Step-03.
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-04. Family of apply functions. 
+### Step-04. Replacing branch structures with logical subscripts.   
 
-# 1) 向量化操作
+# 1) for a element in R. 
 
-a <- 1:4
-b <- 5:10
+if (x > 0) y <- 1 else y <- 0
 
-a + 1
-b + 1
+# 2) for a vector in R. 
 
-a + b
+# x为一个向量, 要定义y与x等长, 且y的每一个元素当且仅当x的对应元素为正数时等于1, 否则等于零。
 
-# 2) apply. 
+y <- numeric(length(x))
+y[x > 0] <- 1
+y
 
-dim(gem1)
+### End of Step-04.
+### ****************************************************************************
 
-class(gem1)
+### ****************************************************************************
+### Step-05. Function: if and ifelse in R.   
 
-gem2 <- as.matrix(gem1)
+# 1) function if in R
 
-gem2[1:10, 1:6]
+x <- 50L
+if (is.integer(x)) {
+  print("X 是一个整数")
+}
 
-mean(gem2[1, ])
-mean(gem2[2, ])
-mean(gem2[200, ])
+# 2) if...else in R. 
 
-m <- apply(gem2, 1, mean)
-print(m)
+# A: Eg-1. 
 
-ma <- apply(gem2, 1, max)
-print(ma)
+x <- c("google","runoob","taobao")
 
-s <- apply(gem2, 2, mean)
-print(s)
+if("runoob" %in% x) {
+  print("包含 runoob")
+} else {
+  print("不包含 runoob")
+}
 
-# 2) lapply.
+# B: Eg-2. 
 
-print(iris)
-iris_list <- as.list(iris)
-iris_list
-length(iris_list)
+x <- c("google","runoob","taobao")
 
-iris2 <- as.list(iris[, -5])
-iris2
+if("weibo" %in% x) {
+  print("第一个 if 包含 weibo")
+} else if ("runoob" %in% x) {
+  print("第二个 if 包含 runoob")
+} else {
+  print("没有找到")
+}
 
-class(iris2)
+### End of Step-05.
+### ****************************************************************************
 
-g <- lapply(iris2, mean)
+### ****************************************************************************
+### Step-06. Function switch in R. 
 
-class(g)
+# 1) switch 语句允许测试一个变量等于多个值时的情况。每个值称为一个 case。
+# switch(expression, case1, case2, case3....)
 
-# lapply(gem2, mean) # warning!
+x <- switch(
+  3,
+  "google",
+  "runoob",
+  "taobao",
+  "weibo"
+)
+print(x)
 
-# 3) sapply. 
+# 2) 如果是字符串返回字符串变量对应的值. 
 
-g1 <- sapply(iris2, mean)
+you.like <- "runoob"
+switch(you.like,
+       google = "www.google.com",
+       runoob = "www.runoob.com",
+       taobao = "www.taobao.com")
 
-class(g1)
 
-g1
+# 3) 如果整数不在范围内的则返回 NULL
 
+x <- switch(4,"google","runoob","taobao")
+x
+NULL
+x <- switch(4,"google","runoob","taobao")
+x
+NULL
 ### End of Step-04.
 ### **************************************************************************** 
 
 ### ****************************************************************************
 ### Step-05. Parallel Computing. . 
 
-# 1) Using Reduce function.
-
-#. add <- function(x) Reduce("+", x)
-#. add(list(1, 2, 3))
-#. 
-#. add_accuml <- function(x) Reduce("+", x, accumulate = TRUE)
-#. add_accuml(list(1, 2, 3))
-#. 
-#. cumsum(list(1, 2, 3))
-
-# 2) Using parallel. 
-
-library(parallel) # 载入parallel包
-
-# 计算可用线程数，并设置并行使用线程数
-
-no_cores <- detectCores() - 1
-
-# 初始化
-cl <- makeCluster(no_cores)
-
-# 修改原本我们lapply()的命令：
-
-gem3 <- as.list(gem1)
-
-length(gem3)
-
-parLapply(cl, gem3, mean)
-
-stopCluster(cl)
-
-
-system.time(lapply(gem3, mean))
-
-
-
-# 3) Rmpi
-
-# 加载 R 包
-library(Rmpi)
-# 检测可用的逻辑 CPU 核心数
-parallel::detectCores()
-# 虚拟机分配四个逻辑CPU核 
-# 1个 master 2个 worker 主机 cloud
-mpi.spawn.Rslaves(nslaves = 2)
-
-# 调用 mpi.apply 函数
-set.seed(1234)
-mpi.apply(c(10, 20), runif)
-
-# 用完要关闭
-mpi.close.Rslaves()
 
 ### End of Step-05.
 ### ****************************************************************************
