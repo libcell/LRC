@@ -10,6 +10,11 @@
 PS: All artificial datasets used to evaluate the performance of gene selection methods were deposited in the Zenodo repository <https://doi.org/10.5281/zenodo.6320499>. The real datasets were collected from GEO and pre-processed according to the pipeline described in this manuscript. 
 
 | No.  | Content | Class-time on theory | Class-time on practice |
-| :--- | :----: | ----: | ----: |
-| aaaa | bbbbbb | ccccc | ccccc |
-| a    | b      | c     | d     |
+| :--- | :----: | :----: | ----: |
+| 1 | Chapter-1. Introduction on R | 1 | 1 |
+| 2 | Chapter-1. Introduction on R | 2 | 4 |
+| 3 | Chapter-1. Introduction on R | 4 | 6 |
+| 4 | Chapter-1. Introduction on R | 3 | 3 |
+| 5 | Chapter-1. Introduction on R | 4 | 6 |
+| 6 | Chapter-1. Introduction on R | 2 | 6 |
+| 7 | Chapter-1. Introduction on R | 2 | 4 |
