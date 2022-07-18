@@ -7,11 +7,9 @@
 
 <img src = "image/course-logo.png" width = "800" align = "middle"> 
 
-<center>This is the ***Cover Page*** of this course (drawn by *Dr*. Liu)</center>
+This is the ***Cover Page*** of this course (drawn by *Dr*. Liu)
 
-<center>ppp</center>
-
-**Please Cite**: HuaChun Yin, JingXin Tao, Yuyang Peng, Ying Xiong, Bo Li, Song Li, Hui Yang. MSPJ: discovering potential biomarkers in small gene expression datasets *via* ensemble learning. ***Computational and Structural Biotechnology Journal***, 2022, DOI: [10.1016/j.csbj.2022.07.022](https://www.sciencedirect.com/science/article/pii/S2001037022003026)
+**Course online**: if you want to playback of classroom lecture videos, please click [数据科学: R入门与进阶](http://course.cloudwe.tech/node/106)
 
 **Note**: there are 48 class-hours for this curriculum, and the detailed information on time allocation is as follows: 
 
