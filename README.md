@@ -1,5 +1,5 @@
 # LRC
-- **LRC**: Learning R Course under the guidance of Dr. Bo
+- **LRC**: Learning R Curriculum under the Guidance of Dr. Bo
 
 - Bo Li, Mingwei Liu, *et al.*
 
