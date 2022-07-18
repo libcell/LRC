@@ -1,5 +1,5 @@
 
-# LRC
+# LRC: Learning R Curriculum
 
 **LRC**: Learning R Curriculum under the Guidance of Dr. Bo
 
@@ -12,7 +12,7 @@
 **Note**: there are 48 class-hours for this curriculum, and the detailed information on time allocation is as follows: 
 
 | No. | Content | Class-time on theory | Class-time on practice |
-| :----: | :--- | :----: | :----: |
+| :----: | :---- | :----: | :----: |
 | 1 | Chapter-1. Introduction on R | 1 | 1 |
 | 2 | Chapter-2. Data objects, importing & exporting | 2 | 4 |
 | 3 | Chapter-3. Data pre-processing in R | 4 | 6 |
