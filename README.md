@@ -12,7 +12,7 @@ PS: All artificial datasets used to evaluate the performance of gene selection m
 | No.  | Content | Class-time on theory | Class-time on practice |
 | :--- | :----: | :----: | ----: |
 | 1 | Chapter-1. Introduction on R | 1 | 1 |
-| 2 | Chapter-1. Introduction on R | 2 | 4 |
+| 2 | Chapter-2. Data objects, importing & exporting | 2 | 4 |
 | 3 | Chapter-1. Introduction on R | 4 | 6 |
 | 4 | Chapter-1. Introduction on R | 3 | 3 |
 | 5 | Chapter-1. Introduction on R | 4 | 6 |
