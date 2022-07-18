@@ -1,5 +1,5 @@
 
-#### LRC: Learning R Curriculum #### 
+# LRC: Learning R Curriculum # 
 
 **LRC**: Learning R Curriculum under the Guidance of Dr. Bo
 
