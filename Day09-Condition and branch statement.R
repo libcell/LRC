@@ -172,12 +172,24 @@ print(x)
 
 # 2) 如果是字符串返回字符串变量对应的值. 
 
+# A: the first way
+
 you.like <- "runoob"
 switch(you.like,
        google = "www.google.com",
        runoob = "www.runoob.com",
        taobao = "www.taobao.com")
 
+# B: the second way
+
+x <- switch(
+  A,
+  A = "google",
+  B = "runoob",
+  C = "taobao",
+  D = "weibo"
+)
+print(x)
 
 # 3) 如果整数不在范围内的则返回 NULL
 
