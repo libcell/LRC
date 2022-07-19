@@ -1,7 +1,7 @@
 
 # LRC: Learning R Curriculum # 
 
-**LRC**: Learning R Curriculum under the Guidance of *Dr*. Bo
+**LRC**: Learning R Curriculum under the Guidance of *Dr*. Li & Liu
 
 - Bo Li, Mingwei Liu, *et al.*
 
