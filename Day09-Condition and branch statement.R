@@ -49,21 +49,29 @@ setwd("D:/00-GitHub/LRC/tmp/")
   print(x) # not return!!!
 }
 
-
 # 4) using expression in plot
 
-curve((x ^ 3 + x ^ 2 + x + 1),
+# 绘制曲线： y = x^3 + x^2 + x + 1
+
+curve((x^3 + x^2 + x + 1),
       -10,
       10,
-      bty = "l",
-      xlab = "x1",
+      bty = "l", # 1? l?
+      xlab = "x",
       ylab = "y")
+
 abline(h = 0,
        v = 0,
-       lty = 2,
-       col = "gray")
-text(0.5,-0.5, "0", col = "gray")
-text(8, 10, "y = x")
+       lty = 2, # line type 
+       col = "red")
+
+text(5, 500, "CQMU", col = "blue")
+
+text(5, 1000, "y = x")
+
+text(-5, 1000, "y = x")
+
+points(0, 0, cex = 3, col = "green", pch = 15)
 
 ### End of Step-02.
 ### ****************************************************************************
@@ -80,12 +88,22 @@ text(8, 10, "y = x")
 
 # 2) 其中的“条件”为一个标量的真或假值, 不允许取缺失值， 如
 
-if(is.na(lambda)) lambda <- 0.5
+ls()
+
+lambda <- NA
+
+print(lambda)
+
+if (is.na(lambda)) lambda <- 0.5
+
+print(lambda)
 
 # 3) two examples for branch：
 
 # A: Eq1. 
 
+x <- -1
+y <- 9
 if (x>1) {
   y <- 2.5
 } else {
@@ -113,7 +131,20 @@ for (i in seq(along = x)) {
 
 # 1) for a element in R. 
 
+x <- rnorm(10)
 if (x > 0) y <- 1 else y <- 0
+print(y)
+
+x
+y <- NULL
+
+for (i in 1:length(x)) {
+  
+  if (x[i] > 0) y[i] <- 1 else y[i] <- 0 
+  
+}
+
+print(y)
 
 # 2) for a vector in R. 
 
@@ -129,9 +160,15 @@ y
 ### ****************************************************************************
 ### Step-05. Function: if and ifelse in R.   
 
+rm(y)
+print(y)
+y <- ifelse(x > 0, 1, 0)
+print(y)
+
 # 1) function if in R
 
 x <- 50L
+# x <- 2.1
 if (is.integer(x)) {
   print("X 是一个整数")
 }
@@ -140,9 +177,9 @@ if (is.integer(x)) {
 
 # A: Eg-1. 
 
-x <- c("google","runoob","taobao")
+x <- c("google", "runoob", "taobao")
 
-if("runoob" %in% x) {
+if ("runoob" %in% x) {
   print("包含 runoob")
 } else {
   print("不包含 runoob")
@@ -164,6 +201,29 @@ if("weibo" %in% x) {
 
 x <- c(-2, 0, 1)
 y <- ifelse(x >=0, 1, 0); print(y)
+
+
+# 4) 
+
+x <- seq(from = -2*pi, to = 2*pi, by = pi/20)
+y <- sin(x)
+plot(x, y)
+plot(x, y, pch = 16)
+seq.col <- ifelse(y >= 0, "red", "green")
+plot(x, y, pch = 16, col = seq.col)
+abline(h = 0, lty =2, lwd = 2)
+
+# 5)
+
+x <- seq(from = -2*pi, to = 2*pi, by = pi/20)
+y <- sin(x)
+plot(x, y)
+plot(x, y, pch = 16)
+seq.col <- ifelse(y >= 0, "red", "green")
+seq.col[y == 0] <- "blue"
+
+plot(x, y, pch = 16, col = seq.col)
+abline(h = 0, lty =2, lwd = 2)
 
 ### End of Step-05.
 ### ****************************************************************************
@@ -196,7 +256,7 @@ switch(you.like,
 # B: the second way
 
 x <- switch(
-  A,
+  "A",
   A = "google",
   B = "runoob",
   C = "taobao",
@@ -206,12 +266,9 @@ print(x)
 
 # 3) 如果整数不在范围内的则返回 NULL
 
-x <- switch(4,"google","runoob","taobao")
+x <- switch(4, "google","runoob","taobao")
 x
-NULL
-x <- switch(4,"google","runoob","taobao")
-x
-NULL
+
 ### End of Step-04.
 ### **************************************************************************** 
 
