@@ -10,7 +10,7 @@
 ################################################################################
 
 ################################################################################
-### code chunk number 09: Condition and branch statement in R Language.
+### code chunk number 10: Loop structure.
 ################################################################################
 
 ### ****************************************************************************
@@ -26,31 +26,25 @@ setwd("D:/00-GitHub/LRC/tmp/")
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-02. Expression in R. 
+### Step-02. for... in R. 
 
-# 任何一个语句都可以看成是一个表达式。 
-# 表达式之间以分号分隔或用换行分隔。
+# R 编程语言中 for 循环语句可以重复执行指定语句，重复次数可在 for 语句中控制。
 
 # 1) the first form
 
-{x <- 15; x}
+v <- LETTERS[1:4]
+for (i in v) {
+  print(i)
+}
 
 # 2) the second form
 
-{
-  x <- 15
-  x
+v <- LETTERS[1:4]
+for (i in v) {
+  print(i)
 }
 
-# 3) the third form
-
-{
-  x <- 15
-  print(x) # not return!!!
-}
-
-
-# 4) using expression in plot
+# 3) using loop in plot
 
 curve((x ^ 3 + x ^ 2 + x + 1),
       -10,
@@ -69,39 +63,28 @@ text(8, 10, "y = x")
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-03. branch structure in R. 
+### Step-03. repeat in R. 
 
-# 1) 分支结构包括if结构：
+# 1) repeat 循环会一直执行代码，直到条件语句为 true 时才退出循环，退出要使用到 break 语句：
 
-# 比如：
-# if (条件) 表达式1
-# 或
-# if (条件) 表达式1 else 表达式2
-
+#. 语法格式如下：
+#. repeat { 
+#.   // 相关代码 
+#.   if(condition) {
+#.     break
+#.   }
+#. }
 # 2) 其中的“条件”为一个标量的真或假值, 不允许取缺失值， 如
 
-if(is.na(lambda)) lambda <- 0.5
+v <- c("Google","Runoob")
+cnt <- 2
 
-# 3) two examples for branch：
-
-# A: Eq1. 
-
-if (x>1) {
-  y <- 2.5
-} else {
-  y <- -y
-}
-
-# B: Eq2. 
-
-x <- c(0.05, 0.6, 0.3, 0.9)
-for (i in seq(along = x)) {
-  if (x[i] <= 0.2) {
-    cat("Small\n")
-  } else if (x[i] <= 0.8) {
-    cat("Medium\n")
-  } else {
-    cat("Large\n")
+repeat {
+  print(v)
+  cnt <- cnt+1
+  
+  if(cnt > 5) {
+    break
   }
 }
 
@@ -109,111 +92,79 @@ for (i in seq(along = x)) {
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-04. Replacing branch structures with logical subscripts.   
+### Step-04. while ... in R.   
 
-# 1) for a element in R. 
+# 1) 只要给定的条件为 true，R 语言中的 while 循环语句会重复执行一个目标语句。
 
-if (x > 0) y <- 1 else y <- 0
+#. while(condition)
+#. {
+#.   statement(s);
+#. }
 
-# 2) for a vector in R. 
+# 2) example on while. 
 
-# x为一个向量, 要定义y与x等长, 且y的每一个元素当且仅当x的对应元素为正数时等于1, 否则等于零。
+v <- c("Google","Runoob")
+cnt <- 2
 
-y <- numeric(length(x))
-y[x > 0] <- 1
-y
+while (cnt < 7) {
+  print(v)
+  cnt = cnt + 1
+}
 
 ### End of Step-04.
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-05. Function: if and ifelse in R.   
+### Step-05. Function: controling loops in R.   
 
-# 1) function if in R
+# 1) break in R
 
-x <- 50L
-if (is.integer(x)) {
-  print("X 是一个整数")
+v <- c("Google","Runoob")
+cnt <- 2
+
+repeat {
+  print(v)
+  cnt <- cnt+1
+  
+  if(cnt > 5) {
+    break
+  }
 }
 
-# 2) if...else in R. 
+# 2) next in R. 
 
-# A: Eg-1. 
-
-x <- c("google","runoob","taobao")
-
-if("runoob" %in% x) {
-  print("包含 runoob")
-} else {
-  print("不包含 runoob")
+v <- LETTERS[1:6]
+for ( i in v) {
+  
+  if (i == "D") {  # D 不会输出，跳过这次循环，进入下一次
+    next
+  }
+  print(i)
 }
-
-# B: Eg-2. 
-
-x <- c("google","runoob","taobao")
-
-if("weibo" %in% x) {
-  print("第一个 if 包含 weibo")
-} else if ("runoob" %in% x) {
-  print("第二个 if 包含 runoob")
-} else {
-  print("没有找到")
-}
-
-# 3) ifelse函数
-
-x <- c(-2, 0, 1)
-y <- ifelse(x >=0, 1, 0); print(y)
 
 ### End of Step-05.
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-06. Function switch in R. 
+### Step-05. Case study.   
 
-# 1) switch 语句允许测试一个变量等于多个值时的情况。每个值称为一个 case。
-# switch(expression, case1, case2, case3....)
+# 1) Reading the XML files. 
 
-x <- switch(
-  3,
-  "google",
-  "runoob",
-  "taobao",
-  "weibo"
-)
-print(x)
+ids <- c("C00000001", "C00000002", "C00000003", "C00000004", "C00000005", 
+         "C00000006", "C00000007", "C00000008", "C00000009", "C00000010")
 
-# 2) 如果是字符串返回字符串变量对应的值. 
+library(XML)
+library(RCurl)
+url <- "http://www.knapsackfamily.com/knapsack_core/information.php?sname=C_ID&word=C00000001"
+content <- getURL(url, .encoding = character())
+tables <- readHTMLTable(content)
+length(tables)
+class(tables)
+tables[[1]]
+tables[[2]]
+metaDB <- tables[[3]]
 
-# A: the first way
-
-you.like <- "runoob"
-switch(you.like,
-       google = "www.google.com",
-       runoob = "www.runoob.com",
-       taobao = "www.taobao.com")
-
-# B: the second way
-
-x <- switch(
-  A,
-  A = "google",
-  B = "runoob",
-  C = "taobao",
-  D = "weibo"
-)
-print(x)
-
-# 3) 如果整数不在范围内的则返回 NULL
-
-x <- switch(4,"google","runoob","taobao")
-x
-NULL
-x <- switch(4,"google","runoob","taobao")
-x
-NULL
-### End of Step-04.
-### **************************************************************************** 
+dim(metaDB)
 
 ################################################################################
 ### End of chunk-09.
