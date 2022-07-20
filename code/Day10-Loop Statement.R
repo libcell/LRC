@@ -90,18 +90,45 @@ table(y == y1)
 
 # 4) using loop in plot
 
+# using loop. 
+
 curve((x ^ 3 + x ^ 2 + x + 1),
       -10,
-      10,
-      bty = "l",
-      xlab = "x1",
-      ylab = "y")
-abline(h = 0,
-       v = 0,
-       lty = 2,
-       col = "gray")
-text(0.5,-0.5, "0", col = "gray")
-text(8, 10, "y = x")
+      10, 
+      ylim = c(-2000, 2000), 
+      lwd = 2, 
+      col = "lightblue", 
+      bty = "l", # line
+      xlab = "The value of x",
+      ylab = "The value of y")
+
+h.value <- seq(-2000, 2000, by = 200)
+
+for (i in 1:length(h.value)) {
+  
+  abline(h = h.value[i], 
+         lty = 2, 
+         col = rainbow(length(h.value))[i])
+  
+  Sys.sleep(2)
+  
+}
+
+# using vector
+
+curve((x ^ 3 + x ^ 2 + x + 1),
+      -10,
+      10, 
+      ylim = c(-2000, 2000), 
+      lwd = 2, 
+      col = "lightblue", 
+      bty = "l", # line
+      xlab = "The value of x",
+      ylab = "The value of y")
+
+h.value <- seq(-2000, 2000, by = 200)
+
+abline(h = h.value, lty = 2, col = rainbow(length(h.value)))
 
 ### End of Step-02.
 ### ****************************************************************************
