@@ -64,8 +64,31 @@ y <- ifelse(x > 0, 1, 0)
 
 # using loop
 
+y1 <- NULL
 
-# 3) using loop in plot
+for (i in 1:length(x)) {
+  
+  if (x[i] > 0) 
+    
+    y1[i] <- 1 
+  
+  else 
+    
+    y1[i] <- 0
+  
+}
+
+print(y1)
+
+print(y)
+
+all(y == y1)
+
+y == y1
+
+table(y == y1)
+
+# 4) using loop in plot
 
 curve((x ^ 3 + x ^ 2 + x + 1),
       -10,
