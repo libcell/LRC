@@ -184,10 +184,14 @@ print(cnt)
 
 v <- c("Google","Runoob")
 cnt <- 2
-
 while (cnt < 7) {
+  print("start-------------------------------------------------")
+  text <- paste("cnt", cnt, sep = "=")
+  print(text)
   print(v)
   cnt = cnt + 1
+  print("end---------------------------------------------------")
+  Sys.sleep(2)
 }
 
 ### End of Step-04.
@@ -213,13 +217,20 @@ repeat {
 # 2) next in R. 
 
 v <- LETTERS[1:6]
-for ( i in v) {
+
+for (i in v) {
   
-  if (i == "D") {  # D 不会输出，跳过这次循环，进入下一次
+  if (i != "D") {  # D 不会输出，跳过这次循环，进入下一次
     next
   }
+  
   print(i)
+  
 }
+
+
+# 用循环打印1-100这100个整数中的偶数，分别用for, while和repeat来实现。
+v <- 1:100
 
 ### End of Step-05.
 ### ****************************************************************************
@@ -244,6 +255,9 @@ tables[[2]]
 metaDB <- tables[[3]]
 
 dim(metaDB)
+
+paste("I", "am", "a", "student", sep = "")
+
 
 ################################################################################
 ### End of chunk-09.
