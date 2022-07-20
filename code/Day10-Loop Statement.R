@@ -33,16 +33,37 @@ setwd("D:/00-GitHub/LRC/tmp/")
 # 1) the first form
 
 v <- LETTERS[1:4]
+
 for (i in v) {
+  
+  print("+++++++++++++++++++++ start ++++++++++++++++++++++++++++")
+  
   print(i)
+  
+  print("+++++++++++++++++++++++ end ++++++++++++++++++++++++++++")
+  
+  Sys.sleep(5)
+  
 }
 
 # 2) the second form
 
 v <- LETTERS[1:4]
-for (i in v) {
-  print(i)
+
+for (i in 1:length(v)) {
+  
+  print(v[i])
+  
 }
+
+# 3) for example
+# generating the y which has the same length with x.
+
+x <- rnorm(10)
+y <- ifelse(x > 0, 1, 0)
+
+# using loop
+
 
 # 3) using loop in plot
 
@@ -77,16 +98,24 @@ text(8, 10, "y = x")
 # 2) 其中的“条件”为一个标量的真或假值, 不允许取缺失值， 如
 
 v <- c("Google","Runoob")
+
 cnt <- 2
 
 repeat {
-  print(v)
-  cnt <- cnt+1
   
-  if(cnt > 5) {
+  # part-1
+  print(v)
+  
+  # part-2
+  cnt <- cnt + 1
+  
+  # part-3
+  if (cnt > 5) {
     break
   }
 }
+
+print(cnt)
 
 ### End of Step-03.
 ### ****************************************************************************
