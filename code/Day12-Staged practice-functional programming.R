@@ -20,57 +20,126 @@
 
 pri.dir <- getwd()
 
-setwd("D:/00-GitHub/LRC/tmp/")
+dir.create("D:/testLRC")
+
+setwd("D:/testLRC")
 
 ### End of Step-01.
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-02. simple function. 
+### Step-02. The examples for calculating the statistics. 
 
-# 1) the first form
+# 1) the first one
+
+# ---------------------- (1) -------------------------
+w <- function(x) {
+  d <- 0
+  for (i in 1:length(x)) {
+    tmp <- abs(x[i] - median(x))
+    d <- sum(d, tmp)
+  }
+  d/length(x)
+}
+
+x1 <- 1:10
+w(x1)
+
+# ---------------------- (2) -------------------------
+
+f1 <- function(x) {
+  n <- length(x)
+  mhat <- median(x)
+  s <- 0.0
+  for(i in 1:n){
+    s <- s + abs(x[i] - mhat)
+  }
+  s <- s/n
+  return(s)
+}
+
+f1(x1)
+
+# ---------------------- (3) -------------------------
+
+x1 <- 1:10
+m <- median(x1) 
+mean(abs(x1 - m))
+
+cal_W <- function(x) mean(abs(x-mean(x))) # median instead of mean
+
+cal_W(1:10)
+
+# compare the run-time using system.time(). 
+
+nrep <- 1000
+x <- runif(10000)
+y1 <- numeric(nrep); y2 <- y1
+system.time(for(i in 1:nrep) y1[i] <- f1(x) )[3]
+
+system.time(for(i in 1:nrep) y1[i] <- f2(x) )[3]
 
 
-# z = x^2 + y^3 which return z value when input x and y values. 
+# compare the run-time using microbenchmark(). 
 
-# 2) the second form
+x <- runif(10000)
+microbenchmark::microbenchmark(
+  f1(x),
+  f2(x)
+)
 
-# 4) using loop in plot
 
-# using loop. 
+# 2) the second one
 
+f1 <- function(x){
+  n <- length(x)
+  y <- numeric(n)
+  
+  for(i in seq_along(x)){
+    if(x[i] >= 0) y[i] <- 1
+    else y[i] <- 0
+  }
+  
+  y
+}
 
-# using vector
+# another one?
+
+# 3) the third one
 
 ### End of Step-02.
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-03. Case study-1. 
+### Step-03. The examples for drawing the pictures. 
 
-# 1) repeat 循环会一直执行代码，直到条件语句为 true 时才退出循环，退出要使用到 break 语句：
+# 1) the first one
 
-# 3) for example
+# 2) the second one
 
-# using function
-
-# input:
-#   x - the first matrix. 
-#   y - the second matrix. 
-# output: 
-#  the result that ...
-
-# improved POM. 
+# 3) the third one
 
 ### End of Step-03.
 ### ****************************************************************************
 
-# z = f(x,y) = x^2 + y^2
+### ****************************************************************************
+### Step-04. The examples for downloading the gene expression data sets. 
 
-# a function which returns a barplot. 
+# 1) the first one
+
+# downloading the R software. 
+
+
+
+# 2) the second one
+
+# 3) the third one
+
+### End of Step-04.
+### ****************************************************************************
 
 ### ****************************************************************************
-### Step-05. Case study.   
+### Step-05. The examples for crawling the data sets from internet pages.   
 
 # 1) Reading the XML files. 
 
@@ -94,7 +163,28 @@ metaDB <- tables[[3]]
 
 dim(metaDB)
 
-paste("I", "am", "a", "student", sep = "")
+### End of Step-04.
+### ****************************************************************************
+
+### ****************************************************************************
+### Step-06. The examples for other purposes. 
+
+# 1) the first form
+
+
+# z = x^2 + y^3 which return z value when input x and y values. 
+
+# 2) the second form
+
+# 4) using loop in plot
+
+# using loop. 
+
+
+# using vector
+
+### End of Step-04.
+### ****************************************************************************
 
 ################################################################################
 ### End of chunk-12.
