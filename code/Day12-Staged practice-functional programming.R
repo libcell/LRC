@@ -66,18 +66,20 @@ x1 <- 1:10
 m <- median(x1) 
 mean(abs(x1 - m))
 
-cal_W <- function(x) mean(abs(x-mean(x))) # median instead of mean
+cal_W <- function(x) mean(abs(x-median(x))) # median instead of mean
 
 cal_W(1:10)
 
+# ---------------------- (4) ------------------------- 
 # compare the run-time using system.time(). 
 
 nrep <- 1000
 x <- runif(10000)
 y1 <- numeric(nrep); y2 <- y1
-system.time(for(i in 1:nrep) y1[i] <- f1(x) )[3]
 
-system.time(for(i in 1:nrep) y1[i] <- f2(x) )[3]
+system.time(for (i in 1:nrep) y1[i] <- f1(x))[3]
+
+system.time(for (i in 1:nrep) y1[i] <- cal_W(x))[3]
 
 
 # compare the run-time using microbenchmark(). 
@@ -114,6 +116,19 @@ f1 <- function(x){
 ### Step-03. The examples for drawing the pictures. 
 
 # 1) the first one
+# 绘制x取值从a到b的正弦曲线
+
+drawSin <- function(start = -pi, end = pi) {
+  x <- seq(start, end, len = 50)
+  y <- sin(x)
+  plot(x, y, type = "p")
+}
+
+drawSin()
+
+drawSin(-pi, pi)
+
+drawSin(10, 20)
 
 # 2) the second one
 
@@ -129,11 +144,51 @@ f1 <- function(x){
 
 # downloading the R software. 
 
+?download.file
 
+url <- "https://mirrors.tuna.tsinghua.edu.cn/CRAN/bin/windows/base/R-4.2.1-win.exe"
+
+download.file(url = url, 
+              destfile = "R.exe", 
+              mode = "wb")
 
 # 2) the second one
 
+gse.asthma <- c("GSE470", 
+                "GSE4302", 
+                "GSE18965", 
+                "GSE41861", 
+                "GSE44037", 
+                "GSE64913", 
+                "GSE67472", 
+                "GSE89809", 
+                "GSE104468", 
+                "GSE63142")
+
+for (i in gse.asthma) {
+  dz <- paste("https://ncbi.nlm.nih.gov/geo/download/?acc=", 
+              i, 
+              "&format=file", 
+              sep = "")
+  wjm <- paste0(i, "_RAW.tar")
+  download.file(dz, 
+                destfile = wjm, 
+                mode = "wb")
+}
+
+
 # 3) the third one
+
+u1 <- "https://www.cqnu.edu.cn/"  # "index.htm(l)"
+u2 <- "https://www.cqnu2222.edu.cn/"
+u3
+
+un
+
+download.file(u1, "index.htm", mode = "wb")
+download.file(u2, "index2.htm", mode = "wb")
+
+
 
 ### End of Step-04.
 ### ****************************************************************************
