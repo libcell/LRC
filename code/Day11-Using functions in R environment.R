@@ -276,9 +276,7 @@ drawBarplot(letters)
 # 1) Reading the XML files. 
 
 getCompound <- function(id = "C00000001") {
-  
-  
-  
+# please write the content of function here!!!
 }
 
 ids <- c("C00000001", "C00000002", "C00000003", "C00000004", "C00000005", 
