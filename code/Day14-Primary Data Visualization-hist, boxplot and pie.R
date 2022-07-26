@@ -28,81 +28,194 @@ setwd("D:/testLRC")
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-02. The examples for calculating the statistics. 
+### Step-02. Preparing the raw data set for GSE470. 
 
-# 1) the first one
+# ---------------------- (1) downloading the data set ------------------------ #
 
-# ---------------------- (1) -------------------------
+# ---------------------- (2) data pre-processing ----------------------------- #
 
-# ---------------------- (2) -------------------------
-
-# ---------------------- (3) -------------------------
-
-# ---------------------- (4) ------------------------- 
-# compare the run-time using system.time(). 
-
-# compare the run-time using microbenchmark(). 
-
-# 2) the second one
-
-# another one?
-
-# 3) the third one
+library(affy)
 
 ### End of Step-02.
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-03. The examples for drawing the pictures. 
+### Step-03. Checking the data quality. 
 
-# 1) the first one
-# 绘制x取值从a到b的正弦曲线
+# 1) the first histogram
+
+# Create data for the graph.
+v <- c(19, 23, 11, 5, 16, 21, 32, 14, 19, 27, 39)
+
+# Create the histogram.
+hist(v, xlab = "No.of Articles", col = "green",
+     border = "black", xlim = c(0, 50),
+     ylim = c(0, 5), breaks = 5)
 
 # 2) the second one
 
+# Creating data for the graph.
+v <- c(19, 23, 11, 5, 16, 21, 32, 14, 19,
+       27, 39, 120, 40, 70, 90)
+
+# Creating the histogram.
+m<-hist(v, xlab = "Weight", ylab ="Frequency",
+        col = "darkmagenta", border = "pink",
+        breaks = 5)
+
+# Setting labels
+text(m$mids, m$counts, labels = m$counts,
+     adj = c(0.5, -0.5))
+
 # 3) the third one
+
+# Creating data for the graph.
+v <- c(19, 23, 11, 5, 16, 21, 32, 14,
+       19, 27, 39, 120, 40, 70, 90)
+
+# Creating the histogram.
+hist(v, xlab = "Weight", ylab ="Frequency",
+     xlim = c(50, 100),
+     col = "darkmagenta", border = "pink",
+     breaks = c(5, 55, 60, 70, 75,
+                80, 100, 140))
+
 
 ### End of Step-03.
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-04. The examples for downloading the gene expression data sets. 
+### Step-04. The bar chart. 
 
 # 1) the first one
 
-# downloading the R software. 
+# Create the data for the chart
+A <- c(17, 32, 8, 53, 1)
+
+# Plot the bar chart
+barplot(A, xlab = "X-axis", ylab = "Y-axis", main ="Bar-Chart")
 
 # 2) the second one
 
+# Create the data for the chart
+A <- c(17, 32, 8, 53, 1)
+
+# Plot the bar chart
+barplot(A, horiz = TRUE, xlab = "X-axis",
+        ylab = "Y-axis", main ="Bar-Chart")
+
 # 3) the third one
 
+# Create the data for the chart
+A <- c(17, 2, 8, 13, 1, 22)
+B <- c("Jan", "feb", "Mar", "Apr", "May", "Jun")
+
+# Plot the bar chart
+barplot(A, names.arg = B, xlab ="Month",
+        ylab ="Articles", col ="green",
+        main ="GeeksforGeeks-Article chart")
+
+# 4) the fourth one
+
+colors = c("green", "orange", "brown")
+months <- c("Mar", "Apr", "May", "Jun", "Jul")
+regions <- c("East", "West", "North")
+
+# Create the matrix of the values.
+Values <- matrix(c(2, 9, 3, 11, 9, 4, 8, 7, 3, 12, 5, 2, 8, 10, 11),
+                 nrow = 3, ncol = 5, byrow = TRUE)
+
+# Create the bar chart
+barplot(Values, main = "Total Revenue", names.arg = months,
+        xlab = "Month", ylab = "Revenue",
+        col = colors, beside = TRUE)
+
+# Add the legend to the chart
+legend("topleft", regions, cex = 0.7, fill = colors)
+
+# the fifth one
+
+colors = c("green", "orange", "brown")
+months <- c("Mar", "Apr", "May", "Jun", "Jul")
+regions <- c("East", "West", "North")
+
+# Create the matrix of the values.
+Values <- matrix(c(2, 9, 3, 11, 9, 4, 8, 7, 3, 12, 5, 2, 8, 10, 11),
+                 nrow = 3, ncol = 5, byrow = TRUE)
+
+# Create the bar chart
+barplot(Values, main = "Total Revenue", names.arg = months,
+        xlab = "Month", ylab = "Revenue", col = colors)
+
+# Add the legend to the chart
+legend("topleft", regions, cex = 0.7, fill = colors)
+
+
+
 ### End of Step-04.
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-05. The examples for crawling the data sets from internet pages.   
+### Step-05. The pie diagram.   
 
-# 1) Reading the XML files. 
+# 1) the first one.
+
+# Create data for the graph.
+geeks<- c(23, 56, 20, 63)
+labels <- c("Mumbai", "Pune", "Chennai", "Bangalore")
+
+# Plot the chart.
+pie(geeks, labels)
+
+# 2) the second one.
+
+# Create data for the graph.
+geeks<- c(23, 56, 20, 63)
+labels <- c("Mumbai", "Pune", "Chennai", "Bangalore")
+
+# Plot the chart with title and rainbow
+# color pallet.
+pie(geeks, labels, main = "City pie chart",
+    col = rainbow(length(geeks)))
+
+# 3) the third one
+
+# Create data for the graph.
+geeks <- c(23, 56, 20, 63)
+labels <- c("Mumbai", "Pune", "Chennai", "Bangalore")
+
+piepercent<- round(100 * geeks / sum(geeks), 1)
+
+# Plot the chart.
+pie(geeks, labels = piepercent,
+    main = "City pie chart", col = rainbow(length(geeks)))
+legend("topright", c("Mumbai", "Pune", "Chennai", "Bangalore"),
+       cex = 0.5, fill = rainbow(length(geeks)))
+
+# 4) the fourth one
+
+# Get the library.
+library(plotrix)
+
+# Create data for the graph.
+geeks <- c(23, 56, 20, 63)
+labels <- c("Mumbai", "Pune", "Chennai", "Bangalore")
+
+piepercent<- round(100 * geeks / sum(geeks), 1)
+
+# Plot the chart.
+pie3D(geeks, labels = piepercent,
+      main = "City pie chart", col = rainbow(length(geeks)))
+legend("topright", c("Mumbai", "Pune", "Chennai", "Bangalore"),
+       cex = 0.5, fill = rainbow(length(geeks)))
 
 ### End of Step-04.
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-06. The examples for other purposes. 
+### Step-06. The layout of diagrams. 
 
-# 1) the first form
-
-
-# z = x^2 + y^3 which return z value when input x and y values. 
-
-# 2) the second form
-
-# 4) using loop in plot
-
-# using loop. 
-
-
-# using vector
+# 1) using the function par
 
 ### End of Step-04.
 ### ****************************************************************************
