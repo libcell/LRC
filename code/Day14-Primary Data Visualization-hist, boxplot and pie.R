@@ -20,9 +20,7 @@
 
 pri.dir <- getwd()
 
-dir.create("D:/testLRC")
-
-setwd("D:/testLRC")
+setwd("D:/00-GitHub/LRC/tmp/")
 
 ### End of Step-01.
 ### ****************************************************************************
