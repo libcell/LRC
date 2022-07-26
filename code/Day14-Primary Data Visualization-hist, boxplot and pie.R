@@ -25,6 +25,16 @@ setwd("D:/00-GitHub/LRC/tmp/")
 ### End of Step-01.
 ### ****************************************************************************
 
+
+dim(cars)
+head(cars)
+
+v <- cars$speed
+
+hist(v, breaks = 10)
+hist(v, breaks = 10, freq = FALSE)
+lines(density(v), type = "l", col = "red", lwd = 3)
+
 ### ****************************************************************************
 ### Step-02. Preparing the raw data set for GSE470. 
 
@@ -46,9 +56,21 @@ library(affy)
 v <- c(19, 23, 11, 5, 16, 21, 32, 14, 19, 27, 39)
 
 # Create the histogram.
-hist(v, xlab = "No.of Articles", col = "green",
-     border = "black", xlim = c(0, 50),
-     ylim = c(0, 5), breaks = 5)
+hist(v, 
+     xlab = "No.of Articles", 
+     col = "green",
+     border = "black", 
+     xlim = c(0, 50),
+     ylim = c(0, 5), 
+     breaks = 10)
+
+hist(v, 
+     xlab = "No.of Articles", 
+     col = 1:7,
+     border = "black", 
+     xlim = c(0, 50),
+     ylim = c(0, 5), 
+     breaks = 10)
 
 # 2) the second one
 
@@ -57,9 +79,19 @@ v <- c(19, 23, 11, 5, 16, 21, 32, 14, 19,
        27, 39, 120, 40, 70, 90)
 
 # Creating the histogram.
-m<-hist(v, xlab = "Weight", ylab ="Frequency",
-        col = "darkmagenta", border = "pink",
-        breaks = 5)
+m <- hist(
+  v,
+  xlab = "Weight",
+  ylab = "Frequency",
+  col = "darkmagenta",
+  ylim = c(0, 6.5), 
+  border = "pink",
+  breaks = 5
+)
+
+class(m)
+print(m)
+# plot(m)
 
 # Setting labels
 text(m$mids, m$counts, labels = m$counts,
@@ -72,11 +104,16 @@ v <- c(19, 23, 11, 5, 16, 21, 32, 14,
        19, 27, 39, 120, 40, 70, 90)
 
 # Creating the histogram.
-hist(v, xlab = "Weight", ylab ="Frequency",
-     xlim = c(50, 100),
-     col = "darkmagenta", border = "pink",
-     breaks = c(5, 55, 60, 70, 75,
-                80, 100, 140))
+hist(
+  v,
+  xlab = "Weight",
+  ylab = "Frequency",
+  xlim = c(0, 150),
+  col = "darkmagenta",
+  border = "pink",
+  breaks = c(5, 55, 60, 70, 75,
+             80, 100, 140)
+)
 
 
 ### End of Step-03.
@@ -91,7 +128,10 @@ hist(v, xlab = "Weight", ylab ="Frequency",
 A <- c(17, 32, 8, 53, 1)
 
 # Plot the bar chart
-barplot(A, xlab = "X-axis", ylab = "Y-axis", main ="Bar-Chart")
+barplot(A,
+        xlab = "X-axis",
+        ylab = "Y-axis",
+        main = "Bar-Chart")
 
 # 2) the second one
 
@@ -99,8 +139,13 @@ barplot(A, xlab = "X-axis", ylab = "Y-axis", main ="Bar-Chart")
 A <- c(17, 32, 8, 53, 1)
 
 # Plot the bar chart
-barplot(A, horiz = TRUE, xlab = "X-axis",
-        ylab = "Y-axis", main ="Bar-Chart")
+barplot(
+  A,
+  horiz = TRUE,
+  xlab = "X-axis",
+  ylab = "Y-axis",
+  main = "Bar-Chart"
+)
 
 # 3) the third one
 
@@ -109,9 +154,14 @@ A <- c(17, 2, 8, 13, 1, 22)
 B <- c("Jan", "feb", "Mar", "Apr", "May", "Jun")
 
 # Plot the bar chart
-barplot(A, names.arg = B, xlab ="Month",
-        ylab ="Articles", col ="green",
-        main ="GeeksforGeeks-Article chart")
+barplot(
+  A,
+  names.arg = B,
+  xlab = "Month",
+  ylab = "Articles",
+  col = "green",
+  main = "GeeksforGeeks-Article chart"
+)
 
 # 4) the fourth one
 
