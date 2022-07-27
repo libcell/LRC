@@ -165,7 +165,7 @@ barplot(
 
 # 4) the fourth one
 
-colors = c("green", "orange", "brown")
+colors <- c("green", "orange", "brown")
 months <- c("Mar", "Apr", "May", "Jun", "Jul")
 regions <- c("East", "West", "North")
 
@@ -174,9 +174,16 @@ Values <- matrix(c(2, 9, 3, 11, 9, 4, 8, 7, 3, 12, 5, 2, 8, 10, 11),
                  nrow = 3, ncol = 5, byrow = TRUE)
 
 # Create the bar chart
-barplot(Values, main = "Total Revenue", names.arg = months,
-        xlab = "Month", ylab = "Revenue",
-        col = colors, beside = TRUE)
+length(Values)
+barplot(
+  Values,
+  main = "Total Revenue",
+  names.arg = months,
+  xlab = "Month",
+  ylab = "Revenue",
+  col = colors,
+  beside = TRUE
+)
 
 # Add the legend to the chart
 legend("topleft", regions, cex = 0.7, fill = colors)
@@ -188,17 +195,25 @@ months <- c("Mar", "Apr", "May", "Jun", "Jul")
 regions <- c("East", "West", "North")
 
 # Create the matrix of the values.
-Values <- matrix(c(2, 9, 3, 11, 9, 4, 8, 7, 3, 12, 5, 2, 8, 10, 11),
-                 nrow = 3, ncol = 5, byrow = TRUE)
+Values <- matrix(
+  c(2, 9, 3, 11, 9, 4, 8, 7, 3, 12, 5, 2, 8, 10, 11),
+  nrow = 3,
+  ncol = 5,
+  byrow = TRUE
+)
 
 # Create the bar chart
-barplot(Values, main = "Total Revenue", names.arg = months,
-        xlab = "Month", ylab = "Revenue", col = colors)
+barplot(
+  Values,
+  main = "Total Revenue",
+  names.arg = months,
+  xlab = "Month",
+  ylab = "Revenue",
+  col = colors
+)
 
 # Add the legend to the chart
 legend("topleft", regions, cex = 0.7, fill = colors)
-
-
 
 ### End of Step-04.
 ### ****************************************************************************
@@ -223,7 +238,9 @@ labels <- c("Mumbai", "Pune", "Chennai", "Bangalore")
 
 # Plot the chart with title and rainbow
 # color pallet.
-pie(geeks, labels, main = "City pie chart",
+pie(geeks, 
+    labels, 
+    main = "City pie chart",
     col = rainbow(length(geeks)))
 
 # 3) the third one
@@ -232,38 +249,85 @@ pie(geeks, labels, main = "City pie chart",
 geeks <- c(23, 56, 20, 63)
 labels <- c("Mumbai", "Pune", "Chennai", "Bangalore")
 
-piepercent<- round(100 * geeks / sum(geeks), 1)
+piepercent <- round(100 * geeks / sum(geeks), 1)
 
 # Plot the chart.
-pie(geeks, labels = piepercent,
-    main = "City pie chart", col = rainbow(length(geeks)))
-legend("topright", c("Mumbai", "Pune", "Chennai", "Bangalore"),
-       cex = 0.5, fill = rainbow(length(geeks)))
+pie(geeks,
+    labels = piepercent,
+    main = "City pie chart",
+    col = rainbow(length(geeks)))
+legend(
+  "topright",
+  c("Mumbai", "Pune", "Chennai", "Bangalore"),
+  cex = 0.5,
+  fill = rainbow(length(geeks))
+)
 
 # 4) the fourth one
 
 # Get the library.
+# install.packages("plotrix")
+
 library(plotrix)
 
 # Create data for the graph.
 geeks <- c(23, 56, 20, 63)
 labels <- c("Mumbai", "Pune", "Chennai", "Bangalore")
 
-piepercent<- round(100 * geeks / sum(geeks), 1)
+piepercent <- round(100 * geeks / sum(geeks), 1)
 
 # Plot the chart.
-pie3D(geeks, labels = piepercent,
-      main = "City pie chart", col = rainbow(length(geeks)))
-legend("topright", c("Mumbai", "Pune", "Chennai", "Bangalore"),
-       cex = 0.5, fill = rainbow(length(geeks)))
+pie3D(geeks, 
+      labels = piepercent,
+      main = "City pie chart", 
+      col = rainbow(length(geeks)))
+legend("topright", 
+       c("Mumbai", "Pune", "Chennai", "Bangalore"),
+       cex = 0.5, 
+       fill = rainbow(length(geeks)))
+
+
+labels1 <- paste0(labels, "\n", piepercent, "%")
+
+barplot(piepercent, 
+        names.arg = labels1, 
+        col = rainbow(length(geeks)))
 
 ### End of Step-04.
 ### ****************************************************************************
+
+iris
+
+boxplot(iris[1:4], col =2:5)
+
+boxplot(Sepal.Length ~ Species, data = iris, col = 2:5)
+
+boxplot(Sepal.Length ~ Species, 
+        data = iris, 
+        col = 2:5, 
+        notch = TRUE)
+
+
+
+
 
 ### ****************************************************************************
 ### Step-06. The layout of diagrams. 
 
 # 1) using the function par
+
+op <- par(mfrow = c(2, 2))
+
+boxplot(iris[1:4], col = 2:5) # 1
+
+boxplot(Sepal.Length ~ Species, data = iris, col = 2:5) # 2
+
+boxplot(Sepal.Length ~ Species, 
+        data = iris, 
+        col = 2:5, 
+        notch = TRUE) # 3
+
+par(op) # or, using: par(no.readonly = TRUE)
 
 ### End of Step-04.
 ### ****************************************************************************
