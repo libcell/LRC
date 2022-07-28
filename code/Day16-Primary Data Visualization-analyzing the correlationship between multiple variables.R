@@ -104,10 +104,10 @@ par(op)
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-04. corrgram. 
+### Step-03. corrgram. 
 
 # 1) using corrgram
-install.packages("corrgram")
+# install.packages("corrgram")
 library("corrgram")
 head(baseball)
 round(cor(baseball[, 5:14], use="pair"),2)
@@ -119,23 +119,53 @@ corrgram(baseball[,vars2], order=TRUE,
          lower.panel=panel.shade, upper.panel=panel.pie,
          diag.panel=panel.minmax, text.panel=panel.txt)
 
+
+corrgram(iris[, 1:4])
+corrgram(iris[, 1:4], 
+         lower.panel = panel.shade, 
+         upper.panel = panel.ellipse, 
+         diag.panel=panel.minmax, 
+         text.panel=panel.txt)
+
 # 2) using corrplot 
 
 # seven methods: "circle", "square", "ellipse", "number", "shade", "color", "pie".
 
 library(corrplot)
+mtcars
+dim(mtcars)
+
 M <- cor(mtcars)
-corrplot(M, method="circle")
 
-corrplot.mixed(M, lower="ellipse", upper="circle")
+corrplot(M, method = "circle")
 
-corrplot(M, type="upper")
+corrplot.mixed(M, lower = "ellipse", upper = "circle")
+corrplot.mixed(M, lower = "ellipse", upper = "number")
+corrplot(M, type = "upper")
 
-### End of Step-04.
+### End of Step-03.
 ### ****************************************************************************
 
+
+library(vioplot)
+
+help(package = "vioplot")
+
+par(mfrow = c(1, 1))
+mu<-2
+si<-0.6
+bimodal<-c(rnorm(1000,-mu,si),rnorm(1000,mu,si))
+uniform<-runif(2000,-4,4)
+normal<-rnorm(2000,0,3)
+
+vioplot(bimodal,uniform,normal)
+boxplot(bimodal,uniform,normal)
+
+vioplot(iris[, 1:4], col = 2:5)
+boxplot(iris[, 1:4], col = 2:5)
+
 ### ****************************************************************************
-### Step-05. density diagram.   
+### Step-04. density diagram.   
 
 # install.packages("reshape2") # 安装包
 library(reshape2) # 加载包
@@ -172,11 +202,11 @@ lines(density(newtip), # 添加曲线
       col = "blue", #设置曲线颜色
       lwd = 2) # 设置线宽
 
-### End of Step-05.
+### End of Step-04.
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-06. QQ diagrams. 
+### Step-05. QQ diagrams. 
 
 summary(tip)
 qtip = quantile(tip, seq(0,1,.1))
@@ -210,11 +240,11 @@ qqline(logtip, # 设置参考线
        col = "burlywood3", # 设置颜色
        lwd = 2) # 设置线宽
 
-### End of Step-06.
+### End of Step-05.
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-07. A contour line.. 
+### Step-06. A contour line.. 
 
 # 1) the first one.
 
@@ -241,13 +271,15 @@ colkey (side = 3, add = TRUE, clim = range(volcano))
 
 par(op) # or, using: par(no.readonly = TRUE)
 
-### End of Step-07.
+### End of Step-06.
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-08. The star and radar diagram. 
+### Step-07. The star and radar diagram. 
 
 # ------------------------- (1) star diagram --------------------------------- #
+
+stars(iris[1:12, 1:4])
 
 data(mtcars)
 stars(mtcars[, 1:7], len = 0.8, key.loc = c(12, 2),
@@ -255,6 +287,8 @@ stars(mtcars[, 1:7], len = 0.8, key.loc = c(12, 2),
 
 stars(mtcars[, 1:7], len = 0.8, key.loc = c(12, 2),
       main = "Motor Trend Cars", draw.segments = TRUE)
+
+stars(iris[1:20, 1:4], draw.segments = TRUE, key.loc = c(2, 2))
 
 data(USJudgeRatings)
 stars(USJudgeRatings, labels = abbreviate(case.names(USJudgeRatings)),
@@ -371,6 +405,7 @@ legend("topright",
 library(aplpack)
 
 data("longley")
+dim(longley)
 faces(longley[1:9,], face.type = 0)
 
 
@@ -423,11 +458,11 @@ par(old)
 
 
 
-### End of Step-08.
+### End of Step-07.
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-09. The violin diagram. 
+### Step-08. The violin diagram. 
 
 x <- c(6, 9, 0, 19, -1, 8, 12, 5, 3, 7,
        2, 4, 3, -8, -9, 8, 4, 12, 5, 14)
@@ -616,9 +651,22 @@ legend("topleft", legend = c("Tall", "Small"), fill = c(2, 3), cex = 1.25)
 ### End of Step-09.
 ### ****************************************************************************
 
+### ****************************************************************************
+### Step-09. the layout of cartons. 
+
+op <- par(mfrow = c(2, 2), 
+          bg = "cyan")
+
+plot(1:10, pch = "1")
+plot(1:10, pch = "2")
+plot(1:10, pch = "3")
+plot(1:10, pch = "4")
+
+par(op)
+
 # 
 par(bg = "cyan")
-par(mar = c(4, 4, 0.5, 0.5))
+par(mar = c(4, 4, .5, .5))
 set.seed(1000)
 plot(rnorm(10))
 
@@ -660,6 +708,16 @@ plot(rnorm(100), pch = "4")
 
 #
 
+op <- par(mar = c(2, 2, 0.5, 0.5)) # 边距
+mat <- matrix(1:9, nrow = 3, byrow = TRUE)
+mat <- matrix(c(1, 1, 2, 1, 1, 2, 3, 4, 5), nrow = 3, byrow = TRUE)
+
+layout(mat)
+
+plot(1:10)
+
+
+
 par(mar = c(2, 2, 0.5, 0.5))
 mat <- matrix(c(1, 1, 2, 3, 4, 4), nrow = 2, byrow = TRUE)
 
@@ -687,6 +745,9 @@ plot(rnorm(100), pch = "2")
 plot(rnorm(100), pch = "3")
 
 plot(rnorm(100), pch = "4")
+
+### End of Step-09.
+### ****************************************************************************
 
 ################################################################################
 ### End of chunk-12.
