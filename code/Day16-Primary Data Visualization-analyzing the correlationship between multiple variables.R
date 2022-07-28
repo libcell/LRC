@@ -616,6 +616,78 @@ legend("topleft", legend = c("Tall", "Small"), fill = c(2, 3), cex = 1.25)
 ### End of Step-09.
 ### ****************************************************************************
 
+# 
+par(bg = "cyan")
+par(mar = c(4, 4, 0.5, 0.5))
+set.seed(1000)
+plot(rnorm(10))
+
+# 
+par(bg = "cyan")
+par(mar = c(4, 4, 0.5, 0.5))
+set.seed(1000)
+par(mgp = c(2, 0, 0)) # xlab/ylab的位置位置，坐标轴标签位置，坐标轴轴线位置， 
+plot(rnorm(10))
+
+# 
+usr <- par("usr") 
+
+xy <- locator(n = 1)
+
+# 
+par(mfrow = c(2, 2))
+par(mar = c(3, 3, 0.5, 0.5))
+
+plot(rnorm(100), pch = "1")
+
+plot(rnorm(100), pch = "2")
+
+plot(rnorm(100), pch = "3")
+
+plot(rnorm(100), pch = "4")
+
+
+# 
+par(mfcol = c(2, 2))
+par(mar = c(3, 3, 0.5, 0.5))
+plot(rnorm(100), pch = "1")
+
+plot(rnorm(100), pch = "2")
+
+plot(rnorm(100), pch = "3")
+
+plot(rnorm(100), pch = "4")
+
+#
+
+par(mar = c(2, 2, 0.5, 0.5))
+mat <- matrix(c(1, 1, 2, 3, 4, 4), nrow = 2, byrow = TRUE)
+
+layout(mat)
+
+plot(rnorm(100), pch = "1")
+
+plot(rnorm(100), pch = "2")
+
+plot(rnorm(100), pch = "3")
+
+plot(rnorm(100), pch = "4")
+
+
+# 
+par(mar = c(2, 2, 0.5, 0.5))
+mat <- matrix(c(1, 2, 3, 4, 4, 4), nrow = 2, byrow = TRUE)
+
+layout(mat)
+
+plot(rnorm(100), pch = "1")
+
+plot(rnorm(100), pch = "2")
+
+plot(rnorm(100), pch = "3")
+
+plot(rnorm(100), pch = "4")
+
 ################################################################################
 ### End of chunk-12.
 ################################################################################
