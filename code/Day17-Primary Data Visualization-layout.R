@@ -321,6 +321,123 @@ plot(rnorm(100), pch = "4")
 ### ****************************************************************************
 
 ### ****************************************************************************
+### Step-05. the colors of cartons in R. 
+
+# ---------------------- (1) Colors 1, 2, and 3 ------------------------------ #
+
+set.seed(19)
+x <- rnorm(30)
+y <- rnorm(30)
+plot(x, y, col = rep(1:3, each = 10), pch = 19)
+legend("bottomright", legend = paste("Group", 1:3), col = 1:3, pch = 19, bty = "n")
+
+
+par(mfrow = c(length(colors()) %/% 60 + 1, 1))  # 画布分割
+par(mar = c(0.1, 0.1, 0.1, 0.1),
+    xaxs = "i",
+    yaxs = "i")
+for (i in 1:(length(colors()) %/% 60 + 1)) {
+  barplot(rep(1, 60),
+          col = colors()[((i - 1) * 60 + 1):(i * 60)],
+          border = colors()[((i - 1) * 60 + 1):(i * 60)],
+          axes = FALSE)
+  box()  # 加边框
+}
+
+palette() 
+
+#重新设置调色板为colors的前10种颜色
+palette(colors()[1:10]) 
+palette()      
+palette('default')
+
+
+par(mfrow = c(3, 2))
+image(volcano, col = cm.colors(10), main = "cm.colors()")
+image(volcano, col = heat.colors(10), main = "heat.colors()")
+image(volcano, col = terrain.colors(10), main = "terrain.colors()")
+image(volcano, col = topo.colors(10), main = "topo.colors()")
+image(volcano, col = rainbow(10), main = "rainbow()")
+
+
+rgb<-rgb(red=255,green=1:255,blue=0,max=255)
+par(mfrow=c(6,1))
+par(mar=c(0.1,0.1,2,0.1), xaxs="i", yaxs="i")
+barplot(rep(1,255),col= rgb,border=rgb,main="rgb")
+barplot(rep(1,100),col=rainbow(100),border=rainbow(100),main="rainbow(100))")
+barplot(rep(1,100),col=heat.colors(100),border=heat.colors(100),main="heat.colors(100))")
+barplot(rep(1,100),col=terrain.colors(100),border=terrain.colors(100),main="terrain.colors(100))")
+barplot(rep(1,100),col=topo.colors(100),border=topo.colors(100),main="topo.colors(100))")
+barplot(rep(1,100),col=cm.colors(100),border=cm.colors(100),main="cm.colors(100))")
+
+
+par(mfrow = c(1,3))
+library(RColorBrewer)
+par(mar=c(0.1,3,0.1,0.1))
+display.brewer.all(type="seq")
+display.brewer.all(type="div")
+display.brewer.all(type="qual")
+
+
+# 左图
+library(RColorBrewer)
+my_col <- brewer.pal(3, 'RdYlGn') # brewer.pal(n, name),其中n为颜色的数量，name表示颜色组的名称
+plot(iris$Sepal.Length, iris$Sepal.Width, col = rep(my_col, each =50))
+# 右图
+plot(iris$Sepal.Length, iris$Sepal.Width, col = rep(rainbow(3), each = 50))
+
+
+# ---------------------- (2) Connecting colors with data --------------------- #
+
+# colorRamp()
+
+pal <- colorRamp(c("red", "blue"))
+pal(0)
+
+## blue
+pal(1)
+
+## purple-ish
+pal(0.5)
+
+pal(seq(0, 1, len = 10))
+
+# colorRampPalette()
+
+pal <- colorRampPalette(c("red", "yellow"))
+## Just return red and yellow
+pal(2)
+pal(10)
+rgb(0, 0, 234, maxColorValue = 255)
+
+# RColorBrewer Package
+library(RColorBrewer)
+display.brewer.all()
+cols <- brewer.pal(3, "BuGn")
+cols
+
+pal <- colorRampPalette(cols)
+image(volcano, col = pal(20))
+
+# smoothScatter()
+
+set.seed(1)
+x <- rnorm(10000)
+y <- rnorm(10000)
+smoothScatter(x, y)
+
+# Adding transparency
+rgb(1, 0, 0, 0.1)
+
+set.seed(2)
+x <- rnorm(2000)
+y <- rnorm(2000)
+plot(x, y, pch = 19)
+
+plot(x, y, pch = 19, col = rgb(0, 0, 0, 0.15))
+
+
+### ****************************************************************************
 ### Step-08. The violin diagram. 
 
 # install.packages("vioplot")
@@ -333,6 +450,25 @@ legend("topright",
 
 ### End of Step-09.
 ### ****************************************************************************
+
+plot(c(1:12), col="white", xaxt="n", yaxt="n", ann = FALSE)
+axis(1, at=1:12, col.axis="red", labels=month.abb)
+axis(2, at=seq(1,12,length=10), col.axis="red", labels=1:10, las=2)
+axis(3, at=seq(1,12,length=7), col.axis="blue", cex.axis=0.7, tck=-0.01, labels = c("Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun")) 
+axis(4, at=seq(1,12,length=11), col.axis="blue", cex.axis=0.7, tck=-0.01, labels=seq(0, 1, 0.1), las=2)
+
+local=c("bottomright", "bottom", "bottomleft", "left", "topleft", "top", "topright", "right", "center")
+par(mar = c(4,2,4,2), pty='m')
+plot(c(0:10), col = "white")
+legend(3, 8, "图例在(3,8)")
+legend(1, 13, "图例在(11,11)", xpd=T)
+for(i in 1:9){
+  legend(local[i], paste("图例在", local[i]))
+}
+
+par(mfrow = c(1, 1))
+
+# ggsci
 
 ################################################################################
 ### End of chunk-12.
