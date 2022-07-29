@@ -27,9 +27,12 @@ setwd("D:/00-GitHub/LRC/tmp/")
 
 ### ****************************************************************************
 ### Step-02. Preparing the raw data set for GSE470. 
+
 # ---------------------- (1) downloading the data set ------------------------ #
 
 dir.create("asthma")
+
+setwd("asthma/")
 
 url.asthma <- "https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE470&format=file"
 
@@ -39,17 +42,14 @@ download.file(url = url.asthma,
               destfile = file.asthma, 
               mode = "wb")
 
-file.copy(file.asthma, "./asthma/")
-
-setwd("asthma/")
-
 untar(file.asthma)
 
 file.remove(file.asthma)
 
-# ----------------------- data preprocessing --------------------
+# ---------------------- (2) Preprocessing the dataset ----------------------- #
 
-library(BiocManager)
+# installing the affy package. 
+
 # BiocManager::install("affy")
 library(affy)
 
@@ -87,6 +87,8 @@ boxplot(final.data, col = 1:12)
 
 hist(final.data)
 
+# ---------------------- (3) Checking data distribution ---------------------- #
+
 op <- par(mfrow = c(3, 4))
 
 for (i in 1:12) {
@@ -99,14 +101,14 @@ for (i in 1:12) {
 
 par(op)
 
-# ---------------------- (2) data pre-processing ----------------------------- #
 ### End of Step-02.
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-03. corrgram. 
+### Step-03. corrgram showing the relationships between multiple variables.  
 
-# 1) using corrgram
+# --------------------------- 1) using corrgram ------------------------------ #
+
 # install.packages("corrgram")
 library("corrgram")
 head(baseball)
@@ -119,7 +121,6 @@ corrgram(baseball[,vars2], order=TRUE,
          lower.panel=panel.shade, upper.panel=panel.pie,
          diag.panel=panel.minmax, text.panel=panel.txt)
 
-
 corrgram(iris[, 1:4])
 corrgram(iris[, 1:4], 
          lower.panel = panel.shade, 
@@ -127,7 +128,7 @@ corrgram(iris[, 1:4],
          diag.panel=panel.minmax, 
          text.panel=panel.txt)
 
-# 2) using corrplot 
+# --------------------------- 2) using corrplot ------------------------------ #
 
 # seven methods: "circle", "square", "ellipse", "number", "shade", "color", "pie".
 
@@ -145,24 +146,6 @@ corrplot(M, type = "upper")
 
 ### End of Step-03.
 ### ****************************************************************************
-
-
-library(vioplot)
-
-help(package = "vioplot")
-
-par(mfrow = c(1, 1))
-mu<-2
-si<-0.6
-bimodal<-c(rnorm(1000,-mu,si),rnorm(1000,mu,si))
-uniform<-runif(2000,-4,4)
-normal<-rnorm(2000,0,3)
-
-vioplot(bimodal,uniform,normal)
-boxplot(bimodal,uniform,normal)
-
-vioplot(iris[, 1:4], col = 2:5)
-boxplot(iris[, 1:4], col = 2:5)
 
 ### ****************************************************************************
 ### Step-04. density diagram.   
