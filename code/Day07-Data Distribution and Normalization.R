@@ -2,7 +2,7 @@
 ################################################################################
 #    &&&....&&&    % Learning R Course in Summer of 2022                       #
 #  &&&&&&..&&&&&&  % Teacher: Bo Li, Mingwei Liu                               #
-#  &&&&&&&&&&&&&&  % Date: Jul. 05th, 2022                                     #
+#  &&&&&&&&&&&&&&  % Date: Jul. 14th, 2022                                     #
 #   &&&&&&&&&&&&   %                                                           #
 #     &&&&&&&&     % Environment: R version 4.1.1;                             #
 #       &&&&       % Platform: x86_64-w64-mingw32/x64 (64-bit)                 #
@@ -88,7 +88,6 @@ lines(density(g2), col = "green", lwd = 3)
 lines(density(g3), col = "blue", lwd = 3)
 
 # 4） Another way for step-3. 
-
 
 op <- par(mfrow = c(1, 2))
 

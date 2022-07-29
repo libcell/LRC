@@ -2,7 +2,7 @@
 ################################################################################
 #    &&&....&&&    % Learning R Course in Summer of 2022                       #
 #  &&&&&&..&&&&&&  % Teacher: Bo Li, Mingwei Liu                               #
-#  &&&&&&&&&&&&&&  % Date: Jul. 05th, 2022                                     #
+#  &&&&&&&&&&&&&&  % Date: Jul. 13th, 2022                                     #
 #   &&&&&&&&&&&&   %                                                           #
 #     &&&&&&&&     % Environment: R version 4.1.1;                             #
 #       &&&&       % Platform: x86_64-w64-mingw32/x64 (64-bit)                 #
@@ -89,6 +89,17 @@ lines(density(x1), col = "red", lwd = 3)
 ### End of Step-02.
 ### ****************************************************************************
 
+### ****************************************************************************
+### Step-03. For example. 
+
+# 1) Installing the related R package. 
+
+install.packages("fBasics")
+
+# 2) Computing the statistics.
+
+# 3) Computing other incicates.
+
 x1
 
 quantile(x1)
@@ -117,16 +128,6 @@ te3 <- mean(e[c(-4, -8)])
 print(te3)
 
 boxplot(e)
-
-
-### ****************************************************************************
-### Step-03. Skewness and kurtosis. 
-
-# 1) Installing the related R package. 
-
-install.packages("fBasics")
-
-# 2) Computing the statistics.
 
 
 ### End of Step-03.

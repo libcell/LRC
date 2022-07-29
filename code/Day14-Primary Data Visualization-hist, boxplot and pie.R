@@ -25,16 +25,6 @@ setwd("D:/00-GitHub/LRC/tmp/")
 ### End of Step-01.
 ### ****************************************************************************
 
-
-dim(cars)
-head(cars)
-
-v <- cars$speed
-
-hist(v, breaks = 10)
-hist(v, breaks = 10, freq = FALSE)
-lines(density(v), type = "l", col = "red", lwd = 3)
-
 ### ****************************************************************************
 ### Step-02. Preparing the raw data set for GSE470. 
 
@@ -114,7 +104,6 @@ hist(
   breaks = c(5, 55, 60, 70, 75,
              80, 100, 140)
 )
-
 
 ### End of Step-03.
 ### ****************************************************************************
@@ -293,9 +282,13 @@ barplot(piepercent,
         names.arg = labels1, 
         col = rainbow(length(geeks)))
 
-### End of Step-04.
+### End of Step-05.
 ### ****************************************************************************
 
+### ****************************************************************************
+### Step-06. The layout of diagrams. 
+
+# 1) using notch parameter. 
 iris
 
 boxplot(iris[1:4], col =2:5)
@@ -307,14 +300,7 @@ boxplot(Sepal.Length ~ Species,
         col = 2:5, 
         notch = TRUE)
 
-
-
-
-
-### ****************************************************************************
-### Step-06. The layout of diagrams. 
-
-# 1) using the function par
+# 2) using the function par
 
 op <- par(mfrow = c(2, 2))
 
@@ -329,7 +315,7 @@ boxplot(Sepal.Length ~ Species,
 
 par(op) # or, using: par(no.readonly = TRUE)
 
-### End of Step-04.
+### End of Step-06.
 ### ****************************************************************************
 
 ################################################################################

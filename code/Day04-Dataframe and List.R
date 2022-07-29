@@ -22,8 +22,11 @@ pri.dir <- getwd()
 
 setwd("D:/00-GitHub/LRC/tmp/")
 
+### End of Step-01.
 ### ****************************************************************************
-### Step-01. About data frame in R. 
+
+### ****************************************************************************
+### Step-02. About data frame in R. 
 
 # 1) Generating data frame. 
 
@@ -57,12 +60,10 @@ result <- data.frame(emp.data$emp_name,
                      emp.data$salary)
 print(result)
 
-
 df <- data.frame(A = emp.data$emp_name, 
                  B = emp.data$salary)
 
 df
-
 
 # Extract first two rows.
 result <- emp.data[1:2, ]
@@ -75,7 +76,6 @@ print(result)
 class(result)
 
 # typeof(result)
-
 
 # 3) Edit the data frame. 
 
@@ -110,11 +110,11 @@ emp.newdata <- 	data.frame(
 emp.finaldata <- rbind(emp.data, emp.newdata)
 print(emp.finaldata)
 
-
-
+### End of Step-02.
+### ****************************************************************************
 
 ### ****************************************************************************
-### Step-02. About list in R. 
+### Step-03. About list in R. 
 
 # 1) Generating list. 
 
@@ -252,9 +252,11 @@ print(v2)
 result <- v1+v2
 print(result)
 
+### End of Step-03.
+### ****************************************************************************
 
 ### ****************************************************************************
-### Step-03. Read and write files in R. 
+### Step-04. Read and write files in R. 
 
 # 1) Generating list. 
 
@@ -277,6 +279,9 @@ print(score)
 write.csv(score, file = "F:/new_score.csv")
 
 # read.table(file = choose(), header = TRUE)
+
+### End of Step-04.
+### ****************************************************************************
 
 ################################################################################
 ### End of chunk-04.

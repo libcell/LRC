@@ -2,7 +2,7 @@
 ################################################################################
 #    &&&....&&&    % Learning R Course in Summer of 2022                       #
 #  &&&&&&..&&&&&&  % Teacher: Bo Li, Mingwei Liu                               #
-#  &&&&&&&&&&&&&&  % Date: Jul. 05th, 2022                                     #
+#  &&&&&&&&&&&&&&  % Date: Jul. 15th, 2022                                     #
 #   &&&&&&&&&&&&   %                                                           #
 #     &&&&&&&&     % Environment: R version 4.1.1;                             #
 #       &&&&       % Platform: x86_64-w64-mingw32/x64 (64-bit)                 #
@@ -213,10 +213,7 @@ parLapply(cl, gem3, mean)
 
 stopCluster(cl)
 
-
 system.time(lapply(gem3, mean))
-
-
 
 # 3) Rmpi
 
