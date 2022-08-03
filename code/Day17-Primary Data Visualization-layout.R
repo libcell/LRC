@@ -115,7 +115,7 @@ library(MASS)
 # Data
 x <- rnorm(500)
 y <- rnorm(500)
-z <- kde2d(x, y, n = 50)
+z <- kde2d(x, y, n = 50)  # to density
 
 # p1
 plot(x, y, pch = 19)
