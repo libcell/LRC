@@ -113,8 +113,10 @@ err.sam <- err.pos$arrayTable$sampleNames[as.numeric(names(table(err.cel))[table
 
 err.samples <- c(err.samples, err.sam)
 
-
 setwd(pri.dir)
+
+### End of Step-04.
+### ****************************************************************************
 
 ################################################################################
 ### End of chunk-12.
