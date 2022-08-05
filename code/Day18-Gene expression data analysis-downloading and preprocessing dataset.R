@@ -16,11 +16,18 @@
 ### ****************************************************************************
 ### Step-01. About working directory in R. 
 
-# For windows, work directory. 
+# 1) For windows, work directory. 
 
 pri.dir <- getwd()
 
 setwd("asthma")
+
+
+# 2) Installing the packages
+
+pkgs <- c("affy", "GEOquery", "arrayQualityMetrics")
+
+BiocManager::install(pkgs)
 
 ### End of Step-01.
 ### ****************************************************************************
