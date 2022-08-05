@@ -28,431 +28,93 @@ setwd("asthma")
 ### ****************************************************************************
 ### Step-02. Downloading. 
 
-# --------------------------- (1) the first one ------------------------------ #
-
-# 1) 调用计算二维核密度的包
+# 1) Getting the basic information of data set. 
 
 library(GEOquery)  
 
+s <- "GSE470"
 
-# 2) 计算二维核密度
-est <- bkde2D(mtcars1, apply(mtcars1, 2, dpik)) 
+gse <- getGEO(s, GSEMatrix = FALSE) 
 
-# 3) 画等高图
-contour(x = est$x1, 
-        y = est$x2, 
-        z = est$fhat,
-        nlevels = 15,
-        col = "darkgreen",
-        xlab = "wt",
-        ylab = "mpg")  
+gse
 
-# 4) 添加散点
-points(mtcars1) 
+# 2) Downloading the raw data of data set. 
 
-# --------------------------- (2) the second one ----------------------------- #
+library(GEOquery)  
 
-# 1) 对一个密度矩阵绘图
+s <- "GSE470"
 
-library(datasets)
-data("volcano")
+getGEOSuppFiles(s, 
+                makeDirectory = TRUE, 
+                baseDir = getwd(), 
+                fetch_files = TRUE, 
+                filter_regex = NULL)
 
-# 2) 用plot3D包中的image2d绘图
+# 3) Decompressing the raw data file. 
 
-library(plot3D)
+setwd(s)
 
-op <- par(mfrow = c(2, 2))
+rd <- dir()
 
-image2D(z = volcano)
-image2D(z = volcano, col = "grey", shade = 0.2, contour = TRUE)
-image2D(z = volcano, colkey = FALSE)
-image2D(z = volcano, colkey = list(plot = FALSE, side = 3))
-colkey (side = 3, add = TRUE, clim = range(volcano))
+untar(rd)
 
-par(op) # or, using: par(no.readonly = TRUE)
+file.remove(rd)
 
-# --------------------------- (3) the third one ------------------------------ #
-
-op <- par(mfrow = c(2, 2))
-
-# picture-1
-contour(x = est$x1, 
-        y = est$x2, 
-        z = est$fhat,
-        nlevels = 15,
-        col = "darkgreen",
-        xlab = "wt",
-        ylab = "mpg")  
-
-points(mtcars1)  # 添加散点
-
-# picture-2
-image2D(z = est$fhat, 
-        x = est$x1, 
-        y = est$x2)
-
-# picture-3
-contour2D(z = est$fhat, 
-          x = est$x1, 
-          y = est$x2)
-
-# picture-4
-contour3D(x = est$x1,
-  y = est$x2,
-  z = 0.6,
-  colvar = est$fhat,
-  zlim = c(0, 1),
-  clab = c("height", "m")
-)
-
-par(op) # or, using: par(no.readonly = TRUE)
-
-# --------------------------- (4) the fourth one ----------------------------- #
-
-# 通过另一种方式进行核密度估计
-# install.packages("MASS")
-library(MASS)
-
-# Data
-x <- rnorm(500)
-y <- rnorm(500)
-z <- kde2d(x, y, n = 50)  # to density
-
-# p1
-plot(x, y, pch = 19)
-contour(z, lwd = 2, add = TRUE,
-        col = hcl.colors(10, "Spectral")) 
-
-# p2
-filled.contour(z)
-
-# p3
-filled.contour(z, nlevels = 10)
-
-# p4
-filled.contour(z, color.palette = terrain.colors)
-
-# p5
-filled.contour(z, plot.axes = {
-  axis(1)
-  axis(2)
-  contour(z, add = TRUE, lwd = 2)
-}
-)
+setwd("..")
 
 ### End of Step-02.
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-03. Preparing the raw data set for GSE470. 
+### Step-03. Reading the raw data set for GSE470. 
 
-# ---------------------- (1) downloading the data set ------------------------ #
+# 1) 
 
-dir.create("asthma")
-
-setwd("asthma/")
-
-url.asthma <- "https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE470&format=file"
-
-file.asthma <- "GSE470_RAW.tar"
-
-download.file(url = url.asthma, 
-              destfile = file.asthma, 
-              mode = "wb")
-
-untar(file.asthma)
-
-file.remove(file.asthma)
-
-# ---------------------- (2) Preprocessing the dataset ----------------------- #
-
-# installing the affy package. 
-
-# BiocManager::install("affy")
+setwd(s)
 
 library(affy)
 
 dat <- ReadAffy()
 
-class(dat)
+# 2) 
 
-str(dat)
+image(dat[, 1])
+image(dat[, 1], col = "black")
 
-print(dat)
+# 3) 
 
-# checking the primary dataset. 
+rGEP <- exprs(dat)
 
-raw.data <- exprs(dat)
+boxplot(rGEP, col = 1:length(dat), las = 2)
 
-head(raw.data)
-
-dim(raw.data)
-
-boxplot(raw.data, col = 1:12)
-
-summary(raw.data)
-
-hist(raw.data)
-
-# data normalization. 
-
-eset <- rma(dat)
-
-class(eset)
-
-final.data <- exprs(eset)
-
-boxplot(final.data, col = 1:12)
-
-hist(final.data)
-
-# ---------------------- (3) Checking data distribution ---------------------- #
-
-op <- par(mfrow = c(3, 4))
-
-for (i in 1:12) {
-  
-  hist(final.data[, i], freq = FALSE) 
-  
-  lines(density(final.data[, i]), col = i, lwd = 3)
-
-}
-
-par(op)
 
 ### End of Step-03.
 ### ****************************************************************************
 
-### ****************************************************************************
-### Step-04. the layout of cartons. 
-
-# ---------------------- (1) Setting parameter par() ------------------------- #
-
-op <- par(mfrow = c(2, 2), bg = "cyan")
-
-plot(1:10, pch = "1")
-plot(1:10, pch = "2")
-plot(1:10, pch = "3")
-plot(1:10, pch = "4")
-
-par(op)
-
-# 
-par(bg = "cyan")
-par(mar = c(4, 4, .5, .5))
-set.seed(1000)
-plot(rnorm(10))
-
-# 
-par(bg = "cyan")
-par(mar = c(4, 4, 0.5, 0.5))
-set.seed(1000)
-par(mgp = c(2, 0, 0)) # xlab/ylab的位置位置，坐标轴标签位置，坐标轴轴线位置， 
-plot(rnorm(10))
-
-# 
-usr <- par("usr") 
-
-xy <- locator(n = 1)
-
-# 
-par(mfrow = c(2, 2))
-par(mar = c(3, 3, 0.5, 0.5))
-
-plot(rnorm(100), pch = "1")
-
-plot(rnorm(100), pch = "2")
-
-plot(rnorm(100), pch = "3")
-
-plot(rnorm(100), pch = "4")
-
-# 
-par(mfcol = c(2, 2))
-par(mar = c(3, 3, 0.5, 0.5))
-plot(rnorm(100), pch = "1")
-
-plot(rnorm(100), pch = "2")
-
-plot(rnorm(100), pch = "3")
-
-plot(rnorm(100), pch = "4")
-
-#
-
-op <- par(mar = c(2, 2, 0.5, 0.5)) # 边距
-mat <- matrix(1:9, nrow = 3, byrow = TRUE)
-mat <- matrix(c(1, 1, 2, 1, 1, 2, 3, 4, 5), nrow = 3, byrow = TRUE)
-
-layout(mat)
-
-plot(1:10)
-
-
-
-par(mar = c(2, 2, 0.5, 0.5))
-mat <- matrix(c(1, 1, 2, 3, 4, 4), nrow = 2, byrow = TRUE)
-
-layout(mat)
-
-plot(rnorm(100), pch = "1")
-
-plot(rnorm(100), pch = "2")
-
-plot(rnorm(100), pch = "3")
-
-plot(rnorm(100), pch = "4")
-
-
-# 
-par(mar = c(2, 2, 0.5, 0.5))
-mat <- matrix(c(1, 2, 3, 4, 4, 4), nrow = 2, byrow = TRUE)
-
-layout(mat)
-
-plot(rnorm(100), pch = "1")
-
-plot(rnorm(100), pch = "2")
-
-plot(rnorm(100), pch = "3")
-
-plot(rnorm(100), pch = "4")
-
-### End of Step-04.
-### ****************************************************************************
 
 ### ****************************************************************************
-### Step-05. the colors of cartons in R. 
+### Step-04. Checking the quality of raw data set for GSE470. 
 
-# ---------------------- (1) Colors 1, 2, and 3 ------------------------------ #
+# 1) using the arrayQualityMetrics
 
-set.seed(19)
-x <- rnorm(30)
-y <- rnorm(30)
-plot(x, y, col = rep(1:3, each = 10), pch = 19)
-legend("bottomright", legend = paste("Group", 1:3), col = 1:3, pch = 19, bty = "n")
+library(arrayQualityMetrics)
 
+err.samples <- NULL
 
-par(mfrow = c(length(colors()) %/% 60 + 1, 1))  # 画布分割
-par(mar = c(0.1, 0.1, 0.1, 0.1),
-    xaxs = "i",
-    yaxs = "i")
-for (i in 1:(length(colors()) %/% 60 + 1)) {
-  barplot(rep(1, 60),
-          col = colors()[((i - 1) * 60 + 1):(i * 60)],
-          border = colors()[((i - 1) * 60 + 1):(i * 60)],
-          axes = FALSE)
-  box()  # 加边框
-}
+dir.nam <- paste("QC_report_for", s, sep = "_")
 
-palette() 
+err.pos <- arrayQualityMetrics(expressionset = dat, 
+                               outdir = dir.nam, 
+                               force = TRUE)
 
-#重新设置调色板为colors的前10种颜色
-palette(colors()[1:10]) 
-palette()      
-palette('default')
+err.cel <- which(err.pos$arrayTable == "x", arr.ind = TRUE)[, 1]
+
+err.sam <- err.pos$arrayTable$sampleNames[as.numeric(names(table(err.cel))[table(err.cel) > 0])]
+
+err.samples <- c(err.samples, err.sam)
 
 
-par(mfrow = c(3, 2))
-image(volcano, col = cm.colors(10), main = "cm.colors()")
-image(volcano, col = heat.colors(10), main = "heat.colors()")
-image(volcano, col = terrain.colors(10), main = "terrain.colors()")
-image(volcano, col = topo.colors(10), main = "topo.colors()")
-image(volcano, col = rainbow(10), main = "rainbow()")
-
-
-rgb<-rgb(red=255,green=1:255,blue=0,max=255)
-par(mfrow=c(6,1))
-par(mar=c(0.1,0.1,2,0.1), xaxs="i", yaxs="i")
-barplot(rep(1,255),col= rgb,border=rgb,main="rgb")
-barplot(rep(1,100),col=rainbow(100),border=rainbow(100),main="rainbow(100))")
-barplot(rep(1,100),col=heat.colors(100),border=heat.colors(100),main="heat.colors(100))")
-barplot(rep(1,100),col=terrain.colors(100),border=terrain.colors(100),main="terrain.colors(100))")
-barplot(rep(1,100),col=topo.colors(100),border=topo.colors(100),main="topo.colors(100))")
-barplot(rep(1,100),col=cm.colors(100),border=cm.colors(100),main="cm.colors(100))")
-
-
-par(mfrow = c(1,3))
-library(RColorBrewer)
-par(mar=c(0.1,3,0.1,0.1))
-display.brewer.all(type="seq")
-display.brewer.all(type="div")
-display.brewer.all(type="qual")
-
-
-# 左图
-library(RColorBrewer)
-my_col <- brewer.pal(3, 'RdYlGn') # brewer.pal(n, name),其中n为颜色的数量，name表示颜色组的名称
-plot(iris$Sepal.Length, iris$Sepal.Width, col = rep(my_col, each =50))
-# 右图
-plot(iris$Sepal.Length, iris$Sepal.Width, col = rep(rainbow(3), each = 50))
-
-
-# ---------------------- (2) Connecting colors with data --------------------- #
-
-# colorRamp()
-
-pal <- colorRamp(c("red", "blue"))
-pal(0)
-
-## blue
-pal(1)
-
-## purple-ish
-pal(0.5)
-
-pal(seq(0, 1, len = 10))
-
-# colorRampPalette()
-
-pal <- colorRampPalette(c("red", "yellow"))
-## Just return red and yellow
-pal(2)
-pal(10)
-rgb(0, 0, 234, maxColorValue = 255)
-
-# RColorBrewer Package
-library(RColorBrewer)
-display.brewer.all()
-cols <- brewer.pal(3, "BuGn")
-cols
-
-pal <- colorRampPalette(cols)
-image(volcano, col = pal(20))
-
-# smoothScatter()
-
-set.seed(1)
-x <- rnorm(10000)
-y <- rnorm(10000)
-smoothScatter(x, y)
-
-# Adding transparency
-rgb(1, 0, 0, 0.1)
-
-set.seed(2)
-x <- rnorm(2000)
-y <- rnorm(2000)
-plot(x, y, pch = 19)
-
-plot(x, y, pch = 19, col = rgb(0, 0, 0, 0.15))
-
-
-### ****************************************************************************
-### Step-08. The violin diagram. 
-
-# install.packages("vioplot")
-library("vioplot")
-vioplot(iris[, 1:4], col = 2:5)
-legend("topright",
-       legend = colnames(iris)[1:4],
-       fill = 2:5,
-       cex = 1.0)
-
-### End of Step-09.
-### ****************************************************************************
-
-
+setwd(pri.dir)
 
 ################################################################################
 ### End of chunk-12.
