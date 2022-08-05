@@ -86,23 +86,32 @@ setwd(s)
 
 library(affy)
 
-dat <- ReadAffy()
+dat <- ReadAffy() # reading all files in *.cel format. 
+
+class(dat)
+
+print(dat)
 
 # 2) 
 
-image(dat[, 1])
-image(dat[, 1], col = "black")
+d <- matrix(rnorm(100), 10, 10)
 
-# 3) 
+d[1, 6] <- 5
+
+d
+
+image(d)
+
+image(dat[, 1])
+
+# 3) using boxplot. 
 
 rGEP <- exprs(dat)
 
 boxplot(rGEP, col = 1:length(dat), las = 2)
 
-
 ### End of Step-03.
 ### ****************************************************************************
-
 
 ### ****************************************************************************
 ### Step-04. Checking the quality of raw data set for GSE470. 
@@ -118,6 +127,8 @@ dir.nam <- paste("QC_report_for", s, sep = "_")
 err.pos <- arrayQualityMetrics(expressionset = dat, 
                                outdir = dir.nam, 
                                force = TRUE)
+
+
 
 err.cel <- which(err.pos$arrayTable == "x", arr.ind = TRUE)[, 1]
 
