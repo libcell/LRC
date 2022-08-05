@@ -20,19 +20,20 @@
 
 pri.dir <- getwd()
 
-setwd("D:/00-GitHub/LRC/tmp/")
+setwd("asthma")
 
 ### End of Step-01.
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-02. A contour line.. 
+### Step-02. Downloading. 
 
 # --------------------------- (1) the first one ------------------------------ #
 
 # 1) 调用计算二维核密度的包
-library(KernSmooth)  
-mtcars1 <- mtcars[, c("wt", "mpg")]
+
+library(GEOquery)  
+
 
 # 2) 计算二维核密度
 est <- bkde2D(mtcars1, apply(mtcars1, 2, dpik)) 
@@ -451,64 +452,7 @@ legend("topright",
 ### End of Step-09.
 ### ****************************************************************************
 
-plot(
-  c(1:12),
-  col = "white",
-  xaxt = "n",
-  yaxt = "n",
-  ann = FALSE
-)
-axis(1,
-     at = 1:12,
-     col.axis = "red",
-     labels = month.abb)
-axis(
-  2,
-  at = seq(1, 12, length = 10),
-  col.axis = "red",
-  labels = 1:10,
-  las = 2
-)
-axis(
-  3,
-  at = seq(1, 12, length = 7),
-  col.axis = "blue",
-  cex.axis = 0.7,
-  tck = -0.01,
-  labels = c("Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun")
-)
-axis(
-  4,
-  at = seq(1, 12, length = 11),
-  col.axis = "blue",
-  cex.axis = 0.7,
-  tck = -0.01,
-  labels = seq(0, 1, 0.1),
-  las = 2
-)
 
-local = c(
-  "bottomright",
-  "bottom",
-  "bottomleft",
-  "left",
-  "topleft",
-  "top",
-  "topright",
-  "right",
-  "center"
-)
-par(mar = c(4, 2, 4, 2), pty = 'm')
-plot(c(0:10), col = "white")
-legend(3, 8, "图例在(3,8)")
-legend(1, 13, "图例在(11,11)", xpd = T)
-for (i in 1:9) {
-  legend(local[i], paste("图例在", local[i]))
-}
-
-par(mfrow = c(1, 1))
-
-# ggsci
 
 ################################################################################
 ### End of chunk-12.
