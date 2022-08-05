@@ -20,12 +20,17 @@
 
 pri.dir <- getwd()
 
-setwd("asthma")
+if (!dir.exists("asthma")) dir.create("asthma")
 
+setwd("asthma")
 
 # 2) Installing the packages
 
-pkgs <- c("affy", "GEOquery", "arrayQualityMetrics")
+pkgs <- c("GEOquery", # downloading the data set. 
+          "affy", # processing DNA microarray from Affymetrix. 
+          "arrayQualityMetrics") # for QC of microarray.
+
+if (!require("BiocManager")) install.packages("BiocManager")
 
 BiocManager::install(pkgs)
 
