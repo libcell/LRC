@@ -42,37 +42,9 @@ BiocManager::install(pkgs)
 
 # 1) Getting the basic information of data set. 
 
-library(GEOquery)  
-
-s <- "GSE470"
-
-gse <- getGEO(s, GSEMatrix = FALSE) 
-
-gse
-
 # 2) Downloading the raw data of data set. 
 
-library(GEOquery)  
-
-s <- "GSE470"
-
-getGEOSuppFiles(s, 
-                makeDirectory = TRUE, 
-                baseDir = getwd(), 
-                fetch_files = TRUE, 
-                filter_regex = NULL)
-
 # 3) Decompressing the raw data file. 
-
-setwd(s)
-
-rd <- dir()
-
-untar(rd)
-
-file.remove(rd)
-
-setwd("..")
 
 ### End of Step-02.
 ### ****************************************************************************
@@ -93,16 +65,6 @@ class(dat)
 print(dat)
 
 # 2) 
-
-d <- matrix(rnorm(100), 10, 10)
-
-d[1, 6] <- 5
-
-d
-
-image(d)
-
-image(dat[, 1])
 
 # 3) using boxplot. 
 
