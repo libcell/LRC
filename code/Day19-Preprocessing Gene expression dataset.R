@@ -54,6 +54,8 @@ BiocManager::install(pkgs)
 
 # 1) 
 
+s <- "GSE470"
+
 setwd(s)
 
 library(affy)
@@ -124,26 +126,17 @@ expre_mat <- affy::exprs(eset)
 
 # 2) Rechecking the quality using the arrayQualityMetrics
 
-library(arrayQualityMetrics)
-
-err.samples <- NULL
-
-dir.nam <- paste("QC_report_for_processed", s, sep = "_")
-
-err.pos <- arrayQualityMetrics(expressionset = dat, 
-                               outdir = dir.nam, 
-                               force = TRUE)
-
-err.cel <- which(err.pos$arrayTable == "x", arr.ind = TRUE)[, 1]
-
-err.sam <- err.pos$arrayTable$sampleNames[as.numeric(names(table(err.cel))[table(err.cel) > 0])]
-
-err.samples <- c(err.samples, err.sam)
-
-setwd(pri.dir)
-
-# 3) Normalizing the GSE470 data set. 
-
+#. library(arrayQualityMetrics)
+#. err.samples <- NULL
+#. dir.nam <- paste("QC_report_for_processed", s, sep = "_")
+#. err.pos <- arrayQualityMetrics(expressionset = dat, 
+#.                                outdir = dir.nam, 
+#.                                force = TRUE)
+#. err.cel <- which(err.pos$arrayTable == "x", arr.ind = TRUE)[, 1]
+#. err.sam <- err.pos$arrayTable$sampleNames[as.numeric(names(table(err.cel))[table(err.cel) > 0])]
+#. err.samples <- c(err.samples, err.sam)
+#. setwd(pri.dir)
+#
 ### End of Step-04.
 ### ****************************************************************************
 
@@ -158,8 +151,8 @@ head(exprs(eset))
 ### ****************************************************************************
 ### Step-06. Annotation.  
 
-# probe which mapped only one gene. 
-# probe which mapped only more gene. 
+# 1) .
+
 # 1) one probe to one gene
 # 2) more probes to one gene. 
 # 3) one probe to more genes.
@@ -167,7 +160,6 @@ head(exprs(eset))
 
 ### End of Step-05.
 ### ****************************************************************************
-
 
 
 ################################################################################
