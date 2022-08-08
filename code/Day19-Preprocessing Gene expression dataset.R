@@ -46,11 +46,11 @@ class(dat)
 
 print(dat)
 
-# 3) using boxplot. 
+# 3) using boxplot to check data distribution. 
 
 rGEP <- exprs(dat)
 
-# boxplot(rGEP, col = 1:length(dat), las = 2)
+boxplot(rGEP, col = 1:length(dat), las = 2)
 
 ### End of Step-02.
 ### ****************************************************************************
@@ -63,80 +63,84 @@ rGEP <- exprs(dat)
 ###--------------------------- S1. RMA algorithm ----------------------------###
 
 eset.r <- rma(dat)
-class(eset)
-print(eset)
-pGEP <- exprs(eset)
-
-op <- par(mfrow = c(1, 2))
-boxplot(rGEP, col = 1:length(dat), las = 2)
-boxplot(pGEP, col = 1:length(dat), las = 2)
-par(op)
+class(eset.r)
+print(eset.r)
 
 ###--------------------------- S2. MAS algorithm ----------------------------###
 
 eset.m <- mas5(dat)
-head(exprs(eset))
-class(eset)
-print(eset)
+class(eset.m)
+print(eset.m)
 
-head(exprs(eset.r))
 head(exprs(eset.m))
-
-hist(exprs(eset.r))
-hist(exprs(eset.m))
+head(exprs(eset.m))
 
 ###-------------------------- S3. dChip algorithm ---------------------------###
 
-eset.d <- affy::expresso(dat, 
-                       normalize.method = "invariantset", 
-                       bg.correct = FALSE, 
-                       pmcorrect.method = "pmonly", 
-                       summary.method = "liwong")
+eset.d <- expresso(dat, 
+                   normalize.method = "invariantset", 
+                   bg.correct = FALSE, 
+                   pmcorrect.method = "pmonly", 
+                   summary.method = "liwong")
+class(eset.d)
+print(eset.d)
+
+head(exprs(eset.d))
+head(exprs(eset.d))
 
 ###-------------------------- S4. gcRMA algorithm ---------------------------###
 
+library(gcrma)
 eset.g <- gcrma(dat)
+class(eset.g)
+print(eset.g)
+
+head(exprs(eset.g))
+head(exprs(eset.g))
 
 ###-------------------------- S5. PLIER algorithm ---------------------------###
 
-eset.p <- plier::justPlier(dat)
+library(plier)
+eset.p <- justPlier(dat, 
+                    normalize = TRUE)
+class(eset.p)
+print(eset.p)
+
+head(exprs(eset.p))
+head(exprs(eset.p))
 
 ###--------------------------- S6. VSN algorithm ----------------------------###
 
-eset.v <- vsn::vsnrma(dat)
+library(vsn)
+eset.v <- vsnrma(dat)
+class(eset.p)
+print(eset.p)
 
-### Data Visualization
+head(exprs(eset.p))
+head(exprs(eset.p))
+
+###--------------------------- S6. VSN algorithm ----------------------------###
+
+# 2) Data Visualization
 
 op <- par(mfrow = c(2, 4))
-
 boxplot(rGEP, col = 1:length(dat), main = "Raw")
+boxplot(log2(rGEP), col = 1:length(dat), main = "Raw-Log2")
 boxplot(exprs(eset.r), col = 1:length(dat), main = "RMA")
-boxplot(exprs(eset.m), col = 1:length(dat), main = "MAS5")
-boxplot(exprs(eset.d), col = 1:length(dat), main = "dChip")
+boxplot(log2(exprs(eset.m)), col = 1:length(dat), main = "MAS5")
+boxplot(log2(exprs(eset.d)), col = 1:length(dat), main = "dChip")
 boxplot(exprs(eset.g), col = 1:length(dat), main = "GCRMA")
 boxplot(exprs(eset.p), col = 1:length(dat), main = "PLIER")
 boxplot(exprs(eset.v), col = 1:length(dat), main = "VSN")
-
 par(op)
 
-# 2) Rechecking the quality using the arrayQualityMetrics
-
-#. library(arrayQualityMetrics)
-#. err.samples <- NULL
-#. dir.nam <- paste("QC_report_for_processed", s, sep = "_")
-#. err.pos <- arrayQualityMetrics(expressionset = dat, 
-#.                                outdir = dir.nam, 
-#.                                force = TRUE)
-#. err.cel <- which(err.pos$arrayTable == "x", arr.ind = TRUE)[, 1]
-#. err.sam <- err.pos$arrayTable$sampleNames[as.numeric(names(table(err.cel))[table(err.cel) > 0])]
-#. err.samples <- c(err.samples, err.sam)
-#. setwd(pri.dir)
-#
-### End of Step-04.
+### End of Step-03.
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-05. Preprocessing and Checking the quality of raw data set for GSE470. 
+### Step-06. Annotation.  
+
+
 
 eset <- exprs(eset.r)
 
@@ -156,15 +160,6 @@ rownames(anno.file) <- anno.file$ID
 # Preprocessed probe-based expression data.
 
 head(eset)
-
-
-
-
-### End of Step-05.
-### ****************************************************************************
-
-### ****************************************************************************
-### Step-06. Annotation.  
 
 # 1) .
 
