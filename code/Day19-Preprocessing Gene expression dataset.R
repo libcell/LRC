@@ -138,74 +138,38 @@ par(op)
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-06. Annotation.  
+### Step-04. Annotation.  
 
+# 1) Downloading the GPL8300-10787.txt from GEO for GPL8300 platform.
+# or, using the following code. 
 
+gse <- GEOquery::getGEO("GSE470", GSEMatrix = FALSE)
 
-eset <- exprs(eset.r)
+anno.file <- gse@gpls$GPL8300@dataTable@table
 
-DT::datatable(eset)
-
-anno.file <- read.delim("clipboard", header = TRUE)
-
-head(anno.file)
+dim(anno.file)
 
 anno.file <- anno.file[, c(1, 10:12)]
 
-head(anno.file)
+# 2) Classifying the probes into three types, for GPL8300 platform. 
 
-# annotation file for probe IDs. 
-rownames(anno.file) <- anno.file$ID
-
-# Preprocessed probe-based expression data.
-
-head(eset)
-
-# 1) .
-
-# annotation file for probe IDs. 
-
-head(anno.file)
-
-# the count for all gene
-length(anno.file$ENTREZ_GENE_ID)
-
-length(unique(anno.file$ENTREZ_GENE_ID))
-
-# 1) one probe to one gene
+# i) one probe to one gene
 
 # o2o.probe
 
-o2o.probe <- NULL
-m2o.probe <- NULL
-
-gene_in_chip <- unique(anno.file$ENTREZ_GENE_ID)
-
-for (i in 1:length(gene_in_chip)) {
-  
-  # grep(gene_in_chip[i], anno.file$ENTREZ_GENE_ID)
-  
-  loc <- which(anno.file$ENTREZ_GENE_ID == gene_in_chip[i])
-  
-  if (length(loc) == 1) o2o.probe <- c(o2o.probe, gene_in_chip[i])
-
-  if (length(loc) > 1) m2o.probe <- c(m2o.probe, gene_in_chip[i])
-  
-}
-
-# 2) multiple probes to one gene. 
+# ii) multiple probes to one gene. 
 
 # m2o.probe
 
 
-# 3) one probe to multiple genes.
+# iii) one probe to multiple genes.
 
 # o2m.probe
 
 
 # 3) Obtaining the final gene expression matrix for GSE470. 
 
-### End of Step-05.
+### End of Step-04.
 ### ****************************************************************************
 
 
