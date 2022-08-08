@@ -114,21 +114,23 @@ boxplot(rGEP, col = 1:length(dat), las = 2)
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-04. Checking the quality of raw data set for GSE470. 
+### Step-04. Preprocessing and Checking the quality of raw data set for GSE470. 
 
-# 1) using the arrayQualityMetrics
+# 1) Normalizing the GSE470 data set. 
+
+eset <- rma(dat)
+
+# 2) Rechecking the quality using the arrayQualityMetrics
 
 library(arrayQualityMetrics)
 
 err.samples <- NULL
 
-dir.nam <- paste("QC_report_for", s, sep = "_")
+dir.nam <- paste("QC_report_for_processed", s, sep = "_")
 
 err.pos <- arrayQualityMetrics(expressionset = dat, 
                                outdir = dir.nam, 
                                force = TRUE)
-
-
 
 err.cel <- which(err.pos$arrayTable == "x", arr.ind = TRUE)[, 1]
 
@@ -138,8 +140,33 @@ err.samples <- c(err.samples, err.sam)
 
 setwd(pri.dir)
 
+# 3) Normalizing the GSE470 data set. 
+
 ### End of Step-04.
 ### ****************************************************************************
+
+### ****************************************************************************
+### Step-05. Preprocessing and Checking the quality of raw data set for GSE470. 
+
+head(exprs(eset))
+
+### End of Step-05.
+### ****************************************************************************
+
+### ****************************************************************************
+### Step-06. Annotation.  
+
+# probe which mapped only one gene. 
+# probe which mapped only more gene. 
+# 1) one probe to one gene
+# 2) more probes to one gene. 
+# 3) one probe to more genes.
+# 3) Obtaining the final gene expression matrix for GSE470. 
+
+### End of Step-05.
+### ****************************************************************************
+
+
 
 ################################################################################
 ### End of chunk-12.

@@ -128,8 +128,6 @@ err.pos <- arrayQualityMetrics(expressionset = dat,
                                outdir = dir.nam, 
                                force = TRUE)
 
-
-
 err.cel <- which(err.pos$arrayTable == "x", arr.ind = TRUE)[, 1]
 
 err.sam <- err.pos$arrayTable$sampleNames[as.numeric(names(table(err.cel))[table(err.cel) > 0])]
