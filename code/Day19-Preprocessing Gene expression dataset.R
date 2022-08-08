@@ -118,7 +118,21 @@ boxplot(rGEP, col = 1:length(dat), las = 2)
 
 # 1) Normalizing the GSE470 data set. 
 
+###--------------------------- S1. RMA algorithm ----------------------------###
+
 eset <- rma(dat)
+
+###--------------------------- S2. MAS algorithm ----------------------------###
+
+###-------------------------- S3. dChip algorithm ---------------------------###
+
+###-------------------------- S4. gcRMA algorithm ---------------------------###
+
+###-------------------------- S5. PLIER algorithm ---------------------------###
+
+###--------------------------- S6. VSN algorithm ----------------------------###
+
+
 
 # 2) Rechecking the quality using the arrayQualityMetrics
 
