@@ -126,13 +126,39 @@ eset <- rma(dat)
 
 ###-------------------------- S3. dChip algorithm ---------------------------###
 
+dat <- affy::ReadAffy()
+
+# eset <- affy::mas5(dat)
+
+eset <- affy::expresso(dat, 
+                       normalize.method = "invariantset", 
+                       bg.correct = FALSE, 
+                       pmcorrect.method = "pmonly", 
+                       summary.method = "liwong")
+expre_mat <- exprs(eset)
+
 ###-------------------------- S4. gcRMA algorithm ---------------------------###
+
+dat <- affy::ReadAffy()
+
+eset <- gcrma::gcrma(dat)
+
+expre_mat <- exprs(eset)
+
 
 ###-------------------------- S5. PLIER algorithm ---------------------------###
 
+eset <- plier::justPlier(dat)
+
+expre_mat <- affy::exprs(eset)
+
 ###--------------------------- S6. VSN algorithm ----------------------------###
 
+dat <- affy::ReadAffy()
 
+eset <- vsn::vsnrma(dat)
+
+expre_mat <- affy::exprs(eset)
 
 # 2) Rechecking the quality using the arrayQualityMetrics
 
