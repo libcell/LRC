@@ -24,105 +24,100 @@ if (!dir.exists("asthma")) dir.create("asthma")
 
 setwd("asthma")
 
-# 2) Installing the packages
-
-pkgs <- c("GEOquery", # downloading the data set. 
-          "affy", # processing DNA microarray from Affymetrix. 
-          "arrayQualityMetrics") # for QC of microarray.
-
-if (!require("BiocManager")) install.packages("BiocManager")
-
-BiocManager::install(pkgs)
-
 ### End of Step-01.
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-02. Downloading. 
+### Step-02. Reading the raw data set for GSE470. 
 
-# 1) Getting the basic information of data set. 
-
-# 2) Downloading the raw data of data set. 
-
-# 3) Decompressing the raw data file. 
-
-### End of Step-02.
-### ****************************************************************************
-
-### ****************************************************************************
-### Step-03. Reading the raw data set for GSE470. 
-
-# 1) 
+# 1) setting the work directory. 
 
 s <- "GSE470"
 
 setwd(s)
 
+# 2) # reading all files in *.cel format. 
+
 library(affy)
 
-dat <- ReadAffy() # reading all files in *.cel format. 
+dat <- ReadAffy() 
 
 class(dat)
 
 print(dat)
 
-# 2) 
-
 # 3) using boxplot. 
 
 rGEP <- exprs(dat)
 
-boxplot(rGEP, col = 1:length(dat), las = 2)
+# boxplot(rGEP, col = 1:length(dat), las = 2)
 
-### End of Step-03.
+### End of Step-02.
 ### ****************************************************************************
 
 ### ****************************************************************************
-### Step-04. Preprocessing and Checking the quality of raw data set for GSE470. 
+### Step-03. Preprocessing and Checking the quality of raw data set for GSE470. 
 
 # 1) Normalizing the GSE470 data set. 
 
 ###--------------------------- S1. RMA algorithm ----------------------------###
 
-eset <- rma(dat)
+eset.r <- rma(dat)
+class(eset)
+print(eset)
+pGEP <- exprs(eset)
+
+op <- par(mfrow = c(1, 2))
+boxplot(rGEP, col = 1:length(dat), las = 2)
+boxplot(pGEP, col = 1:length(dat), las = 2)
+par(op)
 
 ###--------------------------- S2. MAS algorithm ----------------------------###
 
+eset.m <- mas5(dat)
+head(exprs(eset))
+class(eset)
+print(eset)
+
+head(exprs(eset.r))
+head(exprs(eset.m))
+
+hist(exprs(eset.r))
+hist(exprs(eset.m))
+
 ###-------------------------- S3. dChip algorithm ---------------------------###
 
-dat <- affy::ReadAffy()
-
-# eset <- affy::mas5(dat)
-
-eset <- affy::expresso(dat, 
+eset.d <- affy::expresso(dat, 
                        normalize.method = "invariantset", 
                        bg.correct = FALSE, 
                        pmcorrect.method = "pmonly", 
                        summary.method = "liwong")
-expre_mat <- exprs(eset)
 
 ###-------------------------- S4. gcRMA algorithm ---------------------------###
 
-dat <- affy::ReadAffy()
-
-eset <- gcrma::gcrma(dat)
-
-expre_mat <- exprs(eset)
-
+eset.g <- gcrma(dat)
 
 ###-------------------------- S5. PLIER algorithm ---------------------------###
 
-eset <- plier::justPlier(dat)
-
-expre_mat <- affy::exprs(eset)
+eset.p <- plier::justPlier(dat)
 
 ###--------------------------- S6. VSN algorithm ----------------------------###
 
-dat <- affy::ReadAffy()
+eset.v <- vsn::vsnrma(dat)
 
-eset <- vsn::vsnrma(dat)
+### Data Visualization
 
-expre_mat <- affy::exprs(eset)
+op <- par(mfrow = c(2, 4))
+
+boxplot(rGEP, col = 1:length(dat), main = "Raw")
+boxplot(exprs(eset.r), col = 1:length(dat), main = "RMA")
+boxplot(exprs(eset.m), col = 1:length(dat), main = "MAS5")
+boxplot(exprs(eset.d), col = 1:length(dat), main = "dChip")
+boxplot(exprs(eset.g), col = 1:length(dat), main = "GCRMA")
+boxplot(exprs(eset.p), col = 1:length(dat), main = "PLIER")
+boxplot(exprs(eset.v), col = 1:length(dat), main = "VSN")
+
+par(op)
 
 # 2) Rechecking the quality using the arrayQualityMetrics
 
@@ -143,7 +138,27 @@ expre_mat <- affy::exprs(eset)
 ### ****************************************************************************
 ### Step-05. Preprocessing and Checking the quality of raw data set for GSE470. 
 
-head(exprs(eset))
+eset <- exprs(eset.r)
+
+DT::datatable(eset)
+
+anno.file <- read.delim("clipboard", header = TRUE)
+
+head(anno.file)
+
+anno.file <- anno.file[, c(1, 10:12)]
+
+head(anno.file)
+
+# annotation file for probe IDs. 
+rownames(anno.file) <- anno.file$ID
+
+# Preprocessed probe-based expression data.
+
+head(eset)
+
+
+
 
 ### End of Step-05.
 ### ****************************************************************************
@@ -153,9 +168,46 @@ head(exprs(eset))
 
 # 1) .
 
+# annotation file for probe IDs. 
+
+head(anno.file)
+
+# the count for all gene
+length(anno.file$ENTREZ_GENE_ID)
+
+length(unique(anno.file$ENTREZ_GENE_ID))
+
 # 1) one probe to one gene
-# 2) more probes to one gene. 
-# 3) one probe to more genes.
+
+# o2o.probe
+
+o2o.probe <- NULL
+m2o.probe <- NULL
+
+gene_in_chip <- unique(anno.file$ENTREZ_GENE_ID)
+
+for (i in 1:length(gene_in_chip)) {
+  
+  # grep(gene_in_chip[i], anno.file$ENTREZ_GENE_ID)
+  
+  loc <- which(anno.file$ENTREZ_GENE_ID == gene_in_chip[i])
+  
+  if (length(loc) == 1) o2o.probe <- c(o2o.probe, gene_in_chip[i])
+
+  if (length(loc) > 1) m2o.probe <- c(m2o.probe, gene_in_chip[i])
+  
+}
+
+# 2) multiple probes to one gene. 
+
+# m2o.probe
+
+
+# 3) one probe to multiple genes.
+
+# o2m.probe
+
+
 # 3) Obtaining the final gene expression matrix for GSE470. 
 
 ### End of Step-05.
