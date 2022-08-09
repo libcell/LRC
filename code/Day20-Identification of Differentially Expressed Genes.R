@@ -1,0 +1,303 @@
+
+################################################################################
+#    &&&....&&&    % Learning R Course in Summer of 2022                       #
+#  &&&&&&..&&&&&&  % Teacher: Bo Li, Mingwei Liu                               #
+#  &&&&&&&&&&&&&&  % Date: Jul. 28th, 2022                                     #
+#   &&&&&&&&&&&&   %                                                           #
+#     &&&&&&&&     % Environment: R version 4.1.1;                             #
+#       &&&&       % Platform: x86_64-w64-mingw32/x64 (64-bit)                 #
+#        &         %                                                           #
+################################################################################
+
+################################################################################
+### code chunk number 20: Primary drawing in R.
+################################################################################
+
+### ****************************************************************************
+### Step-01. About working directory in R. 
+
+# 1) For windows, work directory. 
+
+pri.dir <- getwd()
+
+if (!dir.exists("asthma")) dir.create("asthma")
+
+setwd("asthma")
+
+### End of Step-01.
+### ****************************************************************************
+
+### ****************************************************************************
+### Step-02. Reading the raw data set for GSE470. 
+
+# 1) setting the work directory. 
+
+s <- "GSE470"
+
+setwd(s)
+
+# 2) # reading all files in *.cel format. 
+
+library(affy)
+
+dat <- ReadAffy() 
+
+
+# 3) Normalizing the data. 
+
+eset <- rma(dat)
+
+op <- par(mfrow = c(1, 2))
+
+rGEP <- exprs(dat) # 
+
+p.GEP <- exprs(eset) # 
+
+boxplot(log2(rGEP), col = 1:length(dat), main = "Raw-Log2")
+boxplot(p.GEP, col = 1:length(dat), main = "RMA-data")
+
+par(op)
+
+# 4) Preparing the labels of samples in GSE470.
+
+colnames(p.GEP)
+
+Label <- rep(c("Asthma", "Control"), c(6, 6)) 
+
+# 5) Visualization. 
+
+# PCA: 主成分分析 
+
+library(pca3d)
+
+help(package = "pca3d")
+
+# ---------------------------------------------------
+data(metabo) # metabolome, metabolite
+dim(metabo)
+# iris
+pca <- prcomp(metabo[, -1], scale. = TRUE)
+pca3d(pca, group = metabo[, 1])
+pca2d( pca, group= metabo[,1] )
+# ---------------------------------------------------
+
+iris.gem <- t(p.GEP)
+dim(iris.gem)
+
+rownames(iris.gem)
+
+pca <- prcomp(iris.gem, scale. = TRUE)
+
+pca3d(pca, group = Label)
+pca2d(pca, group = Label)
+
+
+# clustering analysis. 
+
+# (A) HCA.
+
+p.GEP # probes in rows, samples in columns. 
+
+iris.gem # samples in rows as well as probes in columns. 
+
+d <- dist(iris.gem)
+
+h <- hclust(d)
+
+plot(h)
+
+# (B) heat map. 
+
+library(pheatmap)
+
+pheatmap(p.GEP)
+
+s.GEP <- p.GEP[order(apply(p.GEP, 1, sd), decreasing = TRUE)[1:50], ]
+
+pheatmap(s.GEP)
+
+sample_col <- data.frame(sample = rep(c("Asthma", "Normal"), c(6,6)))
+row.names(sample_col) <- colnames(p.GEP)
+
+#. hclust_gene <- hclust(dist(p.GEP), method = "complete")
+
+# load package
+#. library(dendextend)
+#. 
+#. as.dendrogram(hclust_gene) %>%  plot(horiz = TRUE)
+#. 
+#. gene_col <- cutree(tree = as.dendrogram(hclust_gene), k = 2)
+#. gene_col <- data.frame(cluster = ifelse(test = gene_col == 1, 
+#.                                            yes = "cluster 1", 
+#.                                            no = "cluster 2"))
+#. set.seed(2022)
+#. my_random <- as.factor(sample(x = 1:2, 
+#.                               size = nrow(gene_col), 
+#.                               replace = TRUE))
+#. gene_col$random <- my_random
+
+pheatmap(s.GEP, 
+         # annotation_row = gene_col, 
+         annotation_col = sample_col)
+#. pheatmap(p.GEP[1:50, ], 
+#.          annotation_row = my_gene_col, 
+#.          annotation_col = my_sample_col, 
+#.          width = 1, 
+#.          height = 1)
+
+
+### End of Step-02.
+### ****************************************************************************
+
+### ****************************************************************************
+### Step-03. Annotation.  
+
+# 1) Downloading the GPL8300-10787.txt from GEO for GPL8300 platform.
+# or, using the following code. 
+
+gse <- GEOquery::getGEO("GSE470", GSEMatrix = FALSE)
+
+anno.file <- gse@gpls$GPL8300@dataTable@table
+
+dim(anno.file)
+
+anno.file <- anno.file[, c(1, 10:12)]
+
+# 2) Classifying the probes into three types, for GPL8300 platform. 
+
+# i) Checking the probe names. 
+
+# Determine if there are duplicate probe names。 
+length(anno.file$ID) == length(unique(anno.file$ID))
+
+# i) one probe to one gene
+
+# the genes with only one probe. o2o.probe
+
+allgenes <- names(table(anno.file$ENTREZ_GENE_ID))
+
+gene_with_one_probe <- allgenes[table(anno.file$ENTREZ_GENE_ID) == 1]
+
+# ii) multiple probes to one gene. 
+
+# the genes with multiple probes. o2o.probe
+
+gene_with_more_probe <- allgenes[table(anno.file$ENTREZ_GENE_ID) > 1]
+
+# iii) one probe to multiple genes.
+
+# In this study, it does not exists. 
+
+# 3) Obtaining the final gene expression matrix for GSE470. 
+
+finalGEM <- NULL
+
+genes <- c(gene_with_one_probe, gene_with_more_probe)
+
+for (i in genes) {
+  row.loc <- which(anno.file$ENTREZ_GENE_ID == i)
+  
+  if (length(row.loc) == 1) {
+    
+    i.exp <- p.GEP[anno.file$ID[row.loc], ]
+    
+  } else {
+    
+    i.exp <- apply(p.GEP[anno.file$ID[row.loc], ], 2, median)
+    
+  }
+
+  finalGEM <- rbind(finalGEM, i.exp)
+  
+}
+
+dim(finalGEM)
+
+rownames(finalGEM) <- genes
+
+head(finalGEM)
+
+### End of Step-04.
+### ****************************************************************************
+
+### ****************************************************************************
+### Step-04. Identifying.  
+
+### -------------------------- (1) LIMMA method ---------------------------- ###
+# Linear models and empirical bayes methods. 
+
+# i) loading the limma package. 
+
+library(limma)
+
+# ii) Simulating gene expression data: 10 microarrays and 100 genes. 
+
+eset <- matrix(rnorm(100*10, sd = 0.3), 100, 10)
+eset[1:5, 6:10] <- eset[1:5, 6:10] + 10
+eset[6:10, 6:10] <- eset[1:5, 6:10] - 10
+rownames(eset) <- paste("gene", 1:100, sep = "-")
+
+# iii) Preparing the design matrix corresponds to expriment. 
+disease <- factor(rep(c(1,2), times = c(4,6)))
+levels(disease) <- c("normal","abnormal")
+design <- model.matrix(~ 1 + disease)
+colnames(design) <- c("normal", "abnormal_vs_normal")
+
+# iv) Considering original two estimates plus difference between first 4 and last 6 arrays
+
+fit <- lmFit(eset, design)
+fit <- eBayes(fit)
+topTable(fit, coef = "abnormal_vs_normal", adjust = "BH")
+
+
+### ------------------------ (2) Permutation test -------------------------- ###
+# i) Example case-1  
+
+# 使用生长素后拟南芥侧根的数量
+A <- c(24, 43, 58, 67, 61, 44, 67, 49, 59, 52, 62, 50) 
+
+# 不使用生长的拟南芥侧根的数量
+B <- c(42, 43, 65, 26, 33, 41, 19, 54, 42, 20, 17, 60, 37, 42, 55, 28)
+
+# Question: 生长素是否能够促进拟南芥的生长？
+
+# 解决步骤：
+# S1-提出假设
+#     H0: 加入的生长素能促进拟南芥的根系发育。
+#     H1: 加入的生长素不能促进拟南芥的根系发育。
+#    推论：若H0成立，那么A组数据的分布和B组数据的分布是一样的，也就是服从同个分布。
+# S2-构造假设检验的统计量：
+#    Diff: A组侧根数目的均值同B组侧根数目的均值之差。
+#         Diff = mean(Xa) - mean(Xb)
+
+Mix <- c(A, B)
+all.Diff <- NULL
+for (i in 1:999) {
+  # 将A和B混合，从中挑出12个作为新的A组，剩余的为B组。
+  loc <- sample(1:length(Mix), 12, replace = FALSE)
+  Xa <- Mix[loc]
+  Xb <- Mix[-loc]
+  # 计算并记录第一步中A组同B组的均值之差。
+  Diff <- mean(Xa) - mean(Xb)
+  all.Diff <- c(all.Diff, Diff)
+  # 对前两步重复999次（重复次数越多，得到的背景分布越”稳定“）
+}
+
+hist(all.Diff, breaks = 20, prob = TRUE)
+lines(density(all.Diff))
+
+# S3-检查一次抽样的观察值所在位置，并计算P值。 
+
+Diff.AB <- mean(A) - mean(B)
+
+abline(v = Diff.AB, col = 2)
+
+# 抽样总体中大于14的数值有9个，所以估计的P-value是9/999=0.01
+
+p <- (sum(all.Diff > Diff.AB) + 1) / (999 + 1)
+
+# p<0.05，因此拒绝原假设，则生长素可以促进生长。
+
+################################################################################
+### End of chunk-12.
+################################################################################
