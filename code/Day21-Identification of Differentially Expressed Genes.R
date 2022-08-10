@@ -203,7 +203,7 @@ svmProfile <- rfe(x, logBBB,
                   ## pass options to train()
                   method = "svmRadial") # 
 
-
+svmProfile$variables
 str(svmProfile)
 
 # RF-RFE
