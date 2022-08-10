@@ -175,13 +175,21 @@ svmRFE(input, k=10, halve.above=5)
 
 # for 
 
+# Simulating a gene expression matrix. 
+# 100 genes, 20 samples. 
+
 gem <- matrix(rnorm(20 * 100, sd = 0.3), nrow = 100)
 
+dim(gem) # genes in rows, and samples in columns. 
+
+# Generating the labels os samples. 
 labs <- rep(c("Asthma", "Control"), c(10, 10))
+print(labs)
 
-gem[1:10, 1:10] <- gem[1:10, 1:10] - 10 # down-
+gem[1:10, ] # primary expression values for first ten genes. 
+gem[1:10, 1:10] <- gem[1:10, 1:10] - 10 # down-regulated genes
 
-gem[11:20, 1:10] <- gem[11:20, 1:10] + 10 # up-
+gem[11:20, 1:10] <- gem[11:20, 1:10] + 10 # up-regulated genes. 
 
 # iris.gem <- cbind(labs, t(gem))
 
@@ -191,6 +199,43 @@ rownames(iris.gem) <- paste("Sample", 1:20, sep = "-")
 colnames(iris.gem) <- c("Type", paste("gene", 1:100, sep = "-"))
 
 iris.gem[, 1:21]
+
+# (1) Filter method. 
+
+# i) sd: 标准差
+
+sd_seq <- NULL # 
+
+for (i in 1:100) {
+  
+  tmp <- sd(iris.gem[, i + 1])
+  
+  sd_seq <- c(sd_seq, tmp)
+  
+}
+
+sd_seq # all sd values for all genes. 
+
+colnames(iris.gem)[order(sd_seq, decreasing = TRUE)[1:20] + 1]
+
+# ii) fold change (FC) 变化差异: x1 - x2, x1/x2
+
+fc <- function(x) mean(x[1:10]) - mean(x[11:20])
+
+fc_seq <- apply(iris.gem[, -1], 2, fc)
+
+order(fc_seq)
+
+names(fc_seq)[order(fc_seq)[1:10]] # down-
+names(fc_seq)[order(fc_seq)[91:100]] # up-
+
+# iii) Student t-test. 
+
+# iv) limma method. (FoldChange & Adjusted P value)
+
+
+
+
 
 # first method
 svmRFE(iris.gem, k = 10, halve.above = 100)
