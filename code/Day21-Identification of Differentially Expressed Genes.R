@@ -31,11 +31,9 @@ setwd("asthma")
 ### Step-02. Reading the raw data set for GSE470. 
 
 # 1) setting the work directory. 
-
 s <- "GSE470"
 setwd(s)
 # 2) # reading all files in *.cel format. 
-
 # 3) Normalizing the data. 
 
 ### End of Step-02.
@@ -45,14 +43,13 @@ setwd(s)
 ### Step-03. Identifying.  
 
 ### -------------------------- (1) LIMMA method ---------------------------- ###
-# Linear models and empirical bayes methods. 
+# Linear models and empirical eBayes methods. 
+#  基于以下标准的过滤：(FoldChange & Adjusted P value)
 
 # i) loading the limma package. 
-
 library(limma)
 
 # ii) Simulating gene expression data: 10 microarrays and 100 genes. 
-
 eset <- matrix(rnorm(100*10, sd = 0.3), 100, 10)
 eset[1:5, 6:10] <- eset[1:5, 6:10] + 10
 eset[6:10, 6:10] <- eset[1:5, 6:10] - 10
@@ -80,21 +77,128 @@ degs <- res[abs(res$logFC) > 1 & res$adj.P.Val < 0.05, ]
 
 rownames(degs)
 
+### ---------------------- (2) Other filter methods ------------------------ ###
+# Linear models and empirical eBayes methods. 
+
+# 1) Simulating a gene expression matrix.  
+
+# 100 genes, 20 samples. 
+
+gem <- matrix(rnorm(20 * 100, sd = 0.3), nrow = 100)
+
+dim(gem) # genes in rows, and samples in columns. 
+
+# Generating the labels os samples. 
+labs <- rep(c("Asthma", "Control"), c(10, 10))
+print(labs)
+
+gem[1:10, ] # primary expression values for first ten genes. 
+gem[1:10, 1:10] <- gem[1:10, 1:10] - 10 # down-regulated genes
+
+gem[11:20, 1:10] <- gem[11:20, 1:10] + 10 # up-regulated genes. 
+
+# iris.gem <- cbind(labs, t(gem))
+
+iris.gem <- data.frame(as.factor(labs), t(gem))
+
+rownames(iris.gem) <- paste("Sample", 1:20, sep = "-")
+colnames(iris.gem) <- c("Type", paste("gene", 1:100, sep = "-"))
+
+iris.gem[, 1:21]
+
+# 2) Filter method-1: sd过滤法  
+
+# sd: 标准差
+
+sd_seq <- NULL # 
+
+for (i in 1:100) {
+  
+  tmp <- sd(iris.gem[, i + 1])
+  
+  sd_seq <- c(sd_seq, tmp)
+  
+}
+
+sd_seq # all sd values for all genes. 
+
+colnames(iris.gem)[order(sd_seq, decreasing = TRUE)[1:20] + 1]
+
+# 2) Filter method-2: FC过滤法  
+# fold change (FC) 变化差异: x1 - x2, x1/x2
+
+fc <- function(x) mean(x[1:10]) - mean(x[11:20])
+
+fc_seq <- apply(iris.gem[, -1], 2, fc)
+
+order(fc_seq)
+
+names(fc_seq)[order(fc_seq)[1:10]] # down-
+names(fc_seq)[order(fc_seq)[91:100]] # up-
+
+# 3) Filter method-3: Student t-test过滤法  
+# Student t-test. 
+
+gene1 <- as.vector(iris.gem[, 2])
+names(gene1) <- rownames(iris.gem)
+
+g1.asthma <- gene1[1:10]
+
+g1.control <- gene1[11:20]
+
+res <- t.test(x = g1.asthma, y = g1.control)
+
+res$p.value
+
+f_ttest <- function(x) {
+  res <- t.test(x[1:10], x[11:20])
+  res$p.value
+}
+
+ttest.pvalue <- apply(iris.gem[, -1], 2, f_ttest)
+
+table(ttest.pvalue < 0.05)
+
+degs <- names(ttest.pvalue)[ttest.pvalue < 0.05]
+
+degs
+
+op <- par(mfrow = c(1, 2))
+
+# gene-41, 无变化
+
+iris.gem[1:10, 41 + 1]  # in asthma
+iris.gem[11:20, 41 + 1]  # in control
+
+boxplot(iris.gem[1:10, 41 + 1], iris.gem[11:20, 41 + 1], notch = TRUE)
+
+# gene-42, 有变化
+iris.gem[1:10, 42 + 1]  # in asthma
+iris.gem[11:20, 42 + 1]  # in control
+
+boxplot(iris.gem[1:10, 42 + 1], iris.gem[11:20, 42 + 1], notch = TRUE)
+
+par(op)
+
+# iv) limma method.
+
+# 4) Filter method-4: Permutation test  
+
 ### ------------------------ (2) Permutation test -------------------------- ###
 # i) Example case-1  
 
 # 使用生长素后拟南芥侧根的数量
 A <- c(24, 43, 58, 67, 61, 44, 67, 49, 59, 52, 62, 50) 
 
-# 不使用生长的拟南芥侧根的数量
+# 不使用生长素的拟南芥侧根的数量
 B <- c(42, 43, 65, 26, 33, 41, 19, 54, 42, 20, 17, 60, 37, 42, 55, 28)
 
 # Question: 生长素是否能够促进拟南芥的生长？
 
 # 解决步骤：
 # S1-提出假设
-#     H0: 加入的生长素能促进拟南芥的根系发育。
-#     H1: 加入的生长素不能促进拟南芥的根系发育。
+#     H0: 加入的生长素不能促进拟南芥的根系发育。
+#     H1: 加入的生长素能促进拟南芥的根系发育。
 #    推论：若H0成立，那么A组数据的分布和B组数据的分布是一样的，也就是服从同个分布。
 # S2-构造假设检验的统计量：
 #    Diff: A组侧根数目的均值同B组侧根数目的均值之差。
@@ -120,7 +224,7 @@ lines(density(all.Diff))
 
 Diff.AB <- mean(A) - mean(B)
 
-abline(v = Diff.AB, col = 2)
+abline(v = Diff.AB, col = 2, lwd=2)
 
 # 抽样总体中大于14的数值有9个，所以估计的P-value是9/999=0.01
 
@@ -128,233 +232,11 @@ p <- (sum(all.Diff > Diff.AB) + 1) / (999 + 1)
 
 # p<0.05，因此拒绝原假设，则生长素可以促进生长。
 
-################################################################################
-x1 <- c(99, 99.5, 65, 100, 99, 99.5, 99, 99.5, 99.5, 57, 100, 99.5, 
-        99.5, 99, 99, 99.5, 89.5, 99.5, 100, 99.5)
-y1 <- c(99, 99.5, 99.5, 0, 50, 100, 99.5, 99.5, 0, 99.5, 99.5, 90, 
-        80, 0, 99, 0, 74.5, 0, 100, 49.5)
+# 若直接用Student t-test: 
+# t.test(A, B)
 
-DV <- c(x1, y1)
-IV <- factor(rep(c("A", "B"), c(length(x1), length(y1))))
-library(coin)                    # for oneway_test(), pvalue()
-pvalue(oneway_test(DV ~ IV, 
-                   alternative = "greater", 
-                   distribution = approximate(B = 9999)
-))
+### End of Step-03.
+### ****************************************************************************
 
-library(perm)                    # for permTS()
-permTS(DV ~ IV, 
-       alternative = "greater", 
-       method = "exact.mc", 
-       control = permControl(nmc = 10 ^ 4 - 1))$p.value
-
-library(exactRankTests)          # for perm.test()
-perm.test(DV ~ IV,
-          paired = FALSE,
-          alternative = "greater",
-          exact = TRUE)$p.value
-################################################################################
-
-## (1) SVM-RFE
-
-library(e1071)
-
-source("D:/00-GitHub/LRC/src/msvmRFE.R")
-
-set.seed(2022)
-
-load("D:/00-GitHub/LRC/data/input.Rdata")
-
-input[1:6, 1:10]
-
-dim(input)
-
-table(input$DX2)
-
-svmRFE(input, k=10, halve.above=5)
-
-# for 
-
-# Simulating a gene expression matrix. 
-# 100 genes, 20 samples. 
-
-gem <- matrix(rnorm(20 * 100, sd = 0.3), nrow = 100)
-
-dim(gem) # genes in rows, and samples in columns. 
-
-# Generating the labels os samples. 
-labs <- rep(c("Asthma", "Control"), c(10, 10))
-print(labs)
-
-gem[1:10, ] # primary expression values for first ten genes. 
-gem[1:10, 1:10] <- gem[1:10, 1:10] - 10 # down-regulated genes
-
-gem[11:20, 1:10] <- gem[11:20, 1:10] + 10 # up-regulated genes. 
-
-# iris.gem <- cbind(labs, t(gem))
-
-iris.gem <- data.frame(as.factor(labs), t(gem))
-
-rownames(iris.gem) <- paste("Sample", 1:20, sep = "-")
-colnames(iris.gem) <- c("Type", paste("gene", 1:100, sep = "-"))
-
-iris.gem[, 1:21]
-
-# (1) Filter method. 
-
-# i) sd: 标准差
-
-sd_seq <- NULL # 
-
-for (i in 1:100) {
-  
-  tmp <- sd(iris.gem[, i + 1])
-  
-  sd_seq <- c(sd_seq, tmp)
-  
-}
-
-sd_seq # all sd values for all genes. 
-
-colnames(iris.gem)[order(sd_seq, decreasing = TRUE)[1:20] + 1]
-
-# ii) fold change (FC) 变化差异: x1 - x2, x1/x2
-
-fc <- function(x) mean(x[1:10]) - mean(x[11:20])
-
-fc_seq <- apply(iris.gem[, -1], 2, fc)
-
-order(fc_seq)
-
-names(fc_seq)[order(fc_seq)[1:10]] # down-
-names(fc_seq)[order(fc_seq)[91:100]] # up-
-
-# iii) Student t-test. 
-
-# iv) limma method. (FoldChange & Adjusted P value)
-
-
-
-
-
-# first method
-svmRFE(iris.gem, k = 10, halve.above = 100)
-
-nfold = 10
-nrows = nrow(iris.gem)
-folds = rep(1:nfold, len=nrows)[sample(nrows)]
-results = lapply(folds, svmRFE.wrap, iris.gem, k=5, halve.above=100)
-length(results)
-top.features = WriteFeatures(results, iris.gem, save=F)
-head(top.features)
-
-featsweep = lapply(1:5, FeatSweep.wrap, results, iris.gem)
-
-str(featsweep)
-
-no.info = min(prop.table(table(iris.gem[, 1])))
-errors = sapply(featsweep, function(x) ifelse(is.null(x), NA, x$error))
-
-PlotErrors(errors, no.info=no.info)
-
-
-library(caret)
-set.seed(1)
-x <- iris.gem[, -1]
-logBBB <- as.factor(labs)
-svmProfile <- rfe(x, logBBB,
-                  sizes = 1:100,
-                  rfeControl = rfeControl(functions = caretFuncs,
-                                          number = 200),
-                  ## pass options to train()
-                  method = "svmRadial") # 
-
-svmProfile$variables
-str(svmProfile)
-
-################################################################################
-### End of chunk-12.
-################################################################################
-
-
-
-# RF-RFE
-
-
-RF_RFE <- function(x,y){
-  n = ncol(x)
-  
-  survivingFeaturesIndices = c(1:n)
-  featureRankedList = vector(length=n)
-  rankedFeatureIndex = n
-  
-  
-  while(length(survivingFeaturesIndices)>1)
-  {
-    #First find the apt number of trees
-    numTrees<-round(10^seq(1,3,by=0.2))
-    numTrees
-    
-    errorValues<-vector()
-    print("Going to find the optimal trees for this subset.")
-    
-    #Iterate over every numTrees to find least OOB value
-    for(nt in numTrees)
-    {
-      # print(nt)
-      rf_Model_temp<-randomForest(x[,survivingFeaturesIndices], y, ntree=nt, proximity = FALSE) #by default mtry=sqrt(Number of variables)
-      #rf_Model_temp$err.rate
-      
-      #collect the error Values  
-      errorValues<-c(errorValues,rf_Model_temp$err.rate[nt,1])
-      
-    }
-    
-    cat("\nerrorValues", errorValues)
-    
-    #Find the number of trees of the least OOB error 
-    OptimumTrees<-numTrees[as.integer(which.min(errorValues))] #which.min returns the index of the first min value
-    cat("\nOptimumTrees", OptimumTrees)
-    
-    
-    #training the support vector machine
-    RFModel <- randomForest(x[,survivingFeaturesIndices], y, ntree=OptimumTrees, proximity = FALSE, importance=TRUE)
-    cat("\nRFModel: ")
-    print(RFModel)
-    
-    #Find the importance of the model
-    imp<-importance(RFModel)
-    
-    #Take the MeanDecreaseGini Column
-    MDG<-subset(imp, select = MeanDecreaseGini)
-    cat("\nMDG: ")
-    print(MDG)
-    
-    #rank the features
-    ranking = sort(MDG, index.return = TRUE)$ix
-    cat("\nranking: ", ranking)
-    
-    #update feature ranked list
-    (featureRankedList[rankedFeatureIndex] = survivingFeaturesIndices[ranking[1]])
-    rankedFeatureIndex = rankedFeatureIndex - 1
-    
-    #eliminate the feature with smallest ranking criterion. i.e. Least relevant is removed from further Execution
-    survivingFeaturesIndices <- survivingFeaturesIndices[-ranking[1]]
-    
-    cat("\nsurvivingFeaturesIndices: ",survivingFeaturesIndices)
-    cat("\ncurrent FeatureRankedList:", featureRankedList)
-    cat("\n======================================================\n")
-    
-    if(length(survivingFeaturesIndices) == 1)
-    {
-      print("inside if")
-      featureRankedList[rankedFeatureIndex] = survivingFeaturesIndices[1]
-      cat("\ncurrent FeatureRankedList:", featureRankedList)
-      
-    }
-  }
-  
-  return (featureRankedList)
-}
 
 
