@@ -129,7 +129,30 @@ p <- (sum(all.Diff > Diff.AB) + 1) / (999 + 1)
 # p<0.05，因此拒绝原假设，则生长素可以促进生长。
 
 ################################################################################
-### End of chunk-12.
+x1 <- c(99, 99.5, 65, 100, 99, 99.5, 99, 99.5, 99.5, 57, 100, 99.5, 
+        99.5, 99, 99, 99.5, 89.5, 99.5, 100, 99.5)
+y1 <- c(99, 99.5, 99.5, 0, 50, 100, 99.5, 99.5, 0, 99.5, 99.5, 90, 
+        80, 0, 99, 0, 74.5, 0, 100, 49.5)
+
+DV <- c(x1, y1)
+IV <- factor(rep(c("A", "B"), c(length(x1), length(y1))))
+library(coin)                    # for oneway_test(), pvalue()
+pvalue(oneway_test(DV ~ IV, 
+                   alternative = "greater", 
+                   distribution = approximate(B = 9999)
+))
+
+library(perm)                    # for permTS()
+permTS(DV ~ IV, 
+       alternative = "greater", 
+       method = "exact.mc", 
+       control = permControl(nmc = 10 ^ 4 - 1))$p.value
+
+library(exactRankTests)          # for perm.test()
+perm.test(DV ~ IV,
+          paired = FALSE,
+          alternative = "greater",
+          exact = TRUE)$p.value
 ################################################################################
 
 ## (1) SVM-RFE
@@ -167,8 +190,6 @@ iris.gem <- data.frame(as.factor(labs), t(gem))
 rownames(iris.gem) <- paste("Sample", 1:20, sep = "-")
 colnames(iris.gem) <- c("Type", paste("gene", 1:100, sep = "-"))
 
-iris.gem <- as.data.frame(iris.gem)
-
 iris.gem[, 1:21]
 
 # first method
@@ -205,6 +226,12 @@ svmProfile <- rfe(x, logBBB,
 
 svmProfile$variables
 str(svmProfile)
+
+################################################################################
+### End of chunk-12.
+################################################################################
+
+
 
 # RF-RFE
 
@@ -284,8 +311,5 @@ RF_RFE <- function(x,y){
   
   return (featureRankedList)
 }
-
-
-
 
 
