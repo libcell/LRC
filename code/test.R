@@ -30,7 +30,9 @@ iris.gem[, 1:21]
 ################################################################################
 # (2) Identifying the DEGs using SVM-RFE.
 
-## (1) SVM-RFE
+## SVM-RFE
+
+### ---------------------------- First usage ------------------------------- ###
 
 library(e1071)
 
@@ -38,15 +40,11 @@ source("D:/00-GitHub/LRC/src/msvmRFE.R")
 
 set.seed(2022)
 
-#---------------------------- first method ----------------------------------###
-
 svmRFE(iris.gem, k = 10, halve.above = 5)
 
 # fold change
 
-
-# -------------------------------------------------------------------------------###
-
+### ---------------------------- Second usage ------------------------------ ###
 
 nfold = 10
 nrows = nrow(iris.gem)
@@ -65,7 +63,7 @@ errors = sapply(featsweep, function(x) ifelse(is.null(x), NA, x$error))
 
 PlotErrors(errors, no.info=no.info)
 
-#---------------------------- Second method ---------------------------------###
+### ---------------------------- Third usage ------------------------------- ###
 
 library(caret)
 set.seed(1)
@@ -80,39 +78,12 @@ svmProfile <- rfe(x, logBBB,
 
 svmProfile$variables
 str(svmProfile)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+################################################################################
 
 ################################################################################
+# (3) Identifying the DEGs using Permutation test.
+## 3) Permutation test
+
 x1 <- c(99, 99.5, 65, 100, 99, 99.5, 99, 99.5, 99.5, 57, 100, 99.5, 
         99.5, 99, 99, 99.5, 89.5, 99.5, 100, 99.5)
 y1 <- c(99, 99.5, 99.5, 0, 50, 100, 99.5, 99.5, 0, 99.5, 99.5, 90, 
@@ -139,67 +110,11 @@ perm.test(DV ~ IV,
           exact = TRUE)$p.value
 ################################################################################
 
-## (1) SVM-RFE
-
-library(e1071)
-
-source("D:/00-GitHub/LRC/src/msvmRFE.R")
-
-set.seed(2022)
-
-load("D:/00-GitHub/LRC/data/input.Rdata")
-
-input[1:6, 1:10]
-
-dim(input)
-
-table(input$DX2)
-
-svmRFE(input, k=10, halve.above=5)
-
-
-# first method
-svmRFE(iris.gem, k = 10, halve.above = 100)
-
-nfold = 10
-nrows = nrow(iris.gem)
-folds = rep(1:nfold, len=nrows)[sample(nrows)]
-results = lapply(folds, svmRFE.wrap, iris.gem, k=5, halve.above=100)
-length(results)
-top.features = WriteFeatures(results, iris.gem, save=F)
-head(top.features)
-
-featsweep = lapply(1:5, FeatSweep.wrap, results, iris.gem)
-
-str(featsweep)
-
-no.info = min(prop.table(table(iris.gem[, 1])))
-errors = sapply(featsweep, function(x) ifelse(is.null(x), NA, x$error))
-
-PlotErrors(errors, no.info=no.info)
-
-
-library(caret)
-set.seed(1)
-x <- iris.gem[, -1]
-logBBB <- as.factor(labs)
-svmProfile <- rfe(x, logBBB,
-                  sizes = 1:100,
-                  rfeControl = rfeControl(functions = caretFuncs,
-                                          number = 200),
-                  ## pass options to train()
-                  method = "svmRadial") # 
-
-svmProfile$variables
-str(svmProfile)
-
 ################################################################################
-### End of chunk-12.
-################################################################################
+# (3) Identifying the DEGs using RF-RFE.
+## 3) RF-RFE
 
-
-
-# RF-RFE
+### ---------------------------- First usage ------------------------------- ###
 
 x <- iris.gem[, -1]
 y <- as.factor(labs)
@@ -286,7 +201,7 @@ res.rfrfe <- RF_RFE(iris.gem[, -1], iris.gem[, 1])
 
 res.rfrfe
 
-#-------------------------------------------------------------------------------
+### ---------------------------- Second usage ------------------------------ ###
 
 library(caret)
 set.seed(1)
@@ -300,15 +215,13 @@ rfProfile <- rfe(x, logBBB,
 dim(rfProfile$variables)
 varImp(rf_Model_temp)
 
-
 ################################################################################
 
-####################################################################
-## Script to select best variables for a classification mode using genetic algorithms. 
-## Based on `GA` library with custom fitness function. 
-## This script is explained in the post: 
-## Contact: https://twitter.com/pabloc_ds
-####################################################################
+################################################################################
+# (5) Identifying the DEGs using Genetic Algorithm.
+## 5) GA-FS
+
+### ---------------------------- First usage ------------------------------- ###
 
 # Install packages if missing
 list.of.packages <- c("parallel", "doParallel", "caret", "randomForest", "funModeling", "tidyverse", "GA")
@@ -411,9 +324,6 @@ get_accuracy_metric <- function(data_tr_sample, target, best_vars)
 
 data <- iris.gem
 
-# Data preparation
-# data2=na.omit(data) # <- use with care...
-
 data_y <- as.factor(data$Type)
 data_x <- select(data, -Type)
 
@@ -422,37 +332,39 @@ param_nBits <- ncol(data_x)
 col_names <- colnames(data_x)
 
 # Executing the GA 
-# Executing the GA 
-ga_GA_1 = ga(fitness = function(vars) custom_fitness(vars = vars, 
+ga_GA <-  ga(fitness = function(vars) custom_fitness(vars = vars, 
                                                      data_x =  data_x, 
                                                      data_y = data_y, 
                                                      p_sampling = 0.7), # custom fitness function
              type = "binary", # optimization data type
              crossover = gabin_uCrossover,  # cross-over method
-             # Para-1: number of best ind. to pass directly to next iteration.
-             elitism = 25, 
+             # Para-1: the number of best ind. passing directly to next iteration.
+             elitism = 5, 
              # Para-2: mutation rate prob
-             pmutation = 0.3, 
+             pmutation = 0.1, 
              # Para-3: the number of indivduals / solutions
-             popSize = 500, 
-             pcrossover = 0.8, # the probability of crossover between pairs of chromosomes. 
+             popSize = 100, 
+             # Para-4: probability of crossover between pairs of chromosomes. 
+             pcrossover = 0.5, 
              nBits = param_nBits, # total number of variables
              names = col_names, # variable name
              # Para-4: the number of consecutive generations without improvement (stopping criteria). 
-             run = 10, 
+             run = 500, 
              # Para-5: the number of total generations
-             maxiter = 50, #/////# the number of total generations
+             maxiter = 500, #/////# the number of total generations
              monitor = plot, # plot the result at each iteration
              keepBest = TRUE, # keep the best solution at the end
              parallel = TRUE, # allow parallel processing
              seed = 2022 # for reproducibility purposes
-             )
+)
 
 # Checking the results
-summary(ga_GA_1)
+summary(ga_GA)
+str(ga_GA)
+apply(ga_GA@solution, 2, sum)
 
 # Following line will return the variable names of the final and best solution
-best_vars_ga=col_names[ga_GA_1@solution[1,] == 1]
+best_vars_ga=col_names[ga_GA@solution[1,] == 1]
 
 # Checking the variables of the best solution...
 best_vars_ga
@@ -460,10 +372,9 @@ best_vars_ga
 # Checking the accuracy
 get_accuracy_metric(data_tr_sample = data_x, target = data_y, best_vars_ga)
 
-################################################################################
+### ---------------------------- Second usage ------------------------------ ###
 
 # GA algorithm in Caret package. 
-
 # ctrl <- gafsControl(functions = caretGA)
 
 library(caret)
@@ -506,5 +417,5 @@ obj <- gafs(x = iris.gem[, -1],
             iters = 100,
             gafsControl = ctrl)
 
+################################################################################
 
-dim(ga_GA_1@solution)
