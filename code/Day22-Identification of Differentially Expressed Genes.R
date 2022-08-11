@@ -39,6 +39,51 @@ setwd(s)
 ### End of Step-02.
 ### ****************************************************************************
 
+summary(iris)
+
+# 把iris数据集分为两个子数据集，
+
+loc <- sample(1:150, 75, replace = FALSE)
+
+training.set <- iris[loc, ] # 训练集
+dim(training.set)
+
+test.set <- iris[-loc, ] # 测试集
+dim(test.set)
+
+# 只对训练集进行操作
+
+training.set
+
+table(training.set$Species)
+
+# 建模
+
+library(e1071)
+# svm.model1 <- svm(Species ~ ., data = training.set)
+
+# 用训练集建模型
+
+svm.model2 <- svm(x = training.set[, -5], 
+                  y = training.set[, 5])
+
+summary(svm.model2)
+
+str(svm.model2)
+
+# 用模型去预测一朵花的类别
+
+pre.label.train <- predict(svm.model2, training.set[, -5])
+
+true.label.train <- training.set[, 5]
+
+table(true.label.train, pre.label.train)
+
+pre.label.test <- predict(svm.model2, test.set[, -5])
+true.label.test <- test.set[, 5]
+
+table(true.label.test, pre.label.test)
+
 ### ****************************************************************************
 ### Step-03. Identifying.  
 
@@ -115,12 +160,6 @@ svmProfile <- rfe(x, logBBB,
 
 svmProfile$variables
 str(svmProfile)
-
-
-
-
-
-
 
 ### End of Step-02.
 ### ****************************************************************************

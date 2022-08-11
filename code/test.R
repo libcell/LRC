@@ -40,7 +40,13 @@ set.seed(2022)
 
 #---------------------------- first method ----------------------------------###
 
-svmRFE(iris.gem, k = 10, halve.above = 100)
+svmRFE(iris.gem, k = 10, halve.above = 5)
+
+# fold change
+
+
+# -------------------------------------------------------------------------------###
+
 
 nfold = 10
 nrows = nrow(iris.gem)
@@ -424,24 +430,23 @@ ga_GA_1 = ga(fitness = function(vars) custom_fitness(vars = vars,
              type = "binary", # optimization data type
              crossover = gabin_uCrossover,  # cross-over method
              # Para-1: number of best ind. to pass directly to next iteration.
-             elitism = base::max(1, round(popSize*0.05)), 
+             elitism = 25, 
              # Para-2: mutation rate prob
-             pmutation = 0.03, 
+             pmutation = 0.3, 
              # Para-3: the number of indivduals / solutions
              popSize = 500, 
              pcrossover = 0.8, # the probability of crossover between pairs of chromosomes. 
              nBits = param_nBits, # total number of variables
              names = col_names, # variable name
-             # Para-3: max iter without improvement (stopping criteria). 
+             # Para-4: the number of consecutive generations without improvement (stopping criteria). 
              run = 10, 
-             #/////# the number of total generations
+             # Para-5: the number of total generations
              maxiter = 50, #/////# the number of total generations
              monitor = plot, # plot the result at each iteration
              keepBest = TRUE, # keep the best solution at the end
-             parallel = TRUE, # allow parallel procesing
-             seed = 84211 # for reproducibility purposes
+             parallel = TRUE, # allow parallel processing
+             seed = 2022 # for reproducibility purposes
              )
-
 
 # Checking the results
 summary(ga_GA_1)
