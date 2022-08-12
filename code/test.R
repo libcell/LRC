@@ -417,5 +417,63 @@ obj <- gafs(x = iris.gem[, -1],
             iters = 100,
             gafsControl = ctrl)
 
+### ---------------------------- Third usage ------------------------------- ###
+
+library(FSinR)
+GA_test <- function(data, labels){
+  
+  filter_evaluator <- filterEvaluator('binaryConsistency')
+  
+  search_method <- searchAlgorithm('geneticAlgorithm',
+                                   list(popSize =200,pcrossover = 0.8,
+                                        pmutation = 0.1,maxiter = 10,
+                                        run = 10))
+  input <- as.data.frame(t(data))
+  
+  input$sam.lab <- labels
+  
+  result <- featureSelection(input, 'sam.lab', search_method, filter_evaluator)
+  
+  GA.features<-result$bestFeatures
+  
+  GADEG<-t(GA.features)
+  
+  GADEG1 <- as.data.frame(apply(GADEG, 1, sum))
+  
+  rownames(GADEG1) <- rownames(GADEG)
+  colnames(GADEG1) <- "value"
+  
+  GADEG2 <- as.data.frame(GADEG1[rev(order(GADEG1[,1])),])
+  
+  rownames(GADEG2) <- rownames(GADEG1)[rev(order(GADEG1$value))]
+  
+  return(GADEG2)
+}
+
+deg.ga.all <- NULL
+
+for(m in 1:length(eset.id)){
+  
+  deg.ga.a <- NULL
+  
+  for(n in 1:length(eset.id[[m]])){
+    
+    deg.ga <- NULL
+    
+    e <- eset.id[[m]][[n]]
+    
+    labels <- colnames(eset.id[[m]][[n]])
+    
+    deg.ga <- GA_test(e, labels)
+    
+    deg.ga.a[[n]] <- as.data.frame(deg.ga)
+    
+  }
+  
+  deg.ga.all[[m]] <- deg.ga.a
+}
+
+# save.image(deg.ga.all, file = "deg.ga.all.RData")
+
 ################################################################################
 
