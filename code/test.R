@@ -78,7 +78,11 @@ svmProfile <- rfe(x, logBBB,
 
 svmProfile$variables
 str(svmProfile)
-################################################################################
+
+
+
+
+
 
 ################################################################################
 # (3) Identifying the DEGs using Permutation test.
@@ -476,4 +480,166 @@ for(m in 1:length(eset.id)){
 # save.image(deg.ga.all, file = "deg.ga.all.RData")
 
 ################################################################################
+
+sample <- tibble::tibble(
+  AreaShape_MinorAxisLength = c(10, 12, 15, 16, 8, 8, 7, 7, 13, 18),
+  AreaShape_MajorAxisLength = c(35, 18, 22, 16, 9, 20, 11, 15, 18, 42),
+  AreaShape_Area = c(245, 151, 231, 179, 50, 112, 53, 73, 164, 529)
+)
+variables <- c("AreaShape_MinorAxisLength", "AreaShape_MajorAxisLength", "AreaShape_Area")
+svd_entropy(sample, variables, cores = 1)
+
+################################################################################
+# Parse the level5 dataset from LINCS2020. 
+
+library(cmapR)
+ds <- parse_gctx("level5_beta_trt_cp_n720216x12328.gctx")
+str(ds)
+
+# experiments in columns, and genes in rows. 
+# The following is the gene expression matrix. 
+pertubation_mat <- ds@mat
+
+dim(pertubation_mat)
+
+sig_info <- data.table::fread("siginfo_beta.txt", data.table = FALSE)
+
+dim(sig_info)
+
+# Total number of compounds in LINCS2020
+
+length(table(sig_info$cmap_name))
+
+DT::datatable(sig_info[1:100, ])
+
+# The compounds which meet the condition of pert_type = trt_cp 
+
+selected.sigs <- sig_info[sig_info$pert_type == "trt_cp", ]
+
+nrow(selected.sigs)
+
+length(table(selected.sigs$cmap_name))
+
+
+
+sum(table(sig_info$cmap_name) == 1)
+
+col_meta <- read_gctx_meta("level5_beta_trt_cp_n720216x12328.gctx", 
+                           dim="col")
+
+dim(col_meta)
+
+
+
+
+b <- readRDS("btrees.rds")
+b1 <- b$dtree
+b2 <- b$ptree
+b3 <- b$ltree
+
+class(b1)
+
+as.hclust(b2)
+
+library(ape)
+as.hclust.phylo(b1)
+
+
+plot(b1)
+
+
+
+
+
+
+
+
+
+class(Boston)
+head(Boston)
+
+summary(Boston)
+
+Boston$chas
+
+### example using Boston data in package MASS
+data(Boston, package = "MASS")
+
+## multiscale bootstrap resampling (non-parallel)
+boston.pv <- pvclust(Boston, nboot=100, parallel=FALSE)
+
+## CAUTION: nboot=100 may be too small for actual use.
+##          We suggest nboot=1000 or larger.
+##          plot/print functions will be useful for diagnostics.
+
+## plot dendrogram with p-values
+plot(boston.pv)
+
+ask.bak <- par()$ask
+par(ask=TRUE)
+
+## highlight clusters with high au p-values
+pvrect(boston.pv)
+
+## print the result of multiscale bootstrap resampling
+print(boston.pv, digits=3)
+
+## plot diagnostic for curve fitting
+msplot(boston.pv, edges=c(2,4,6,7))
+
+par(ask=ask.bak)
+
+## print clusters with high p-values
+boston.pp <- pvpick(boston.pv)
+boston.pp
+
+### Using a custom distance measure
+
+## Define a distance function which returns an object of class "dist".
+## The function must have only one argument "x" (data matrix or data.frame).
+cosine <- function(x) {
+  x <- as.matrix(x)
+  y <- t(x) %*% x
+  res <- 1 - y / (sqrt(diag(y)) %*% t(sqrt(diag(y))))
+  res <- as.dist(res)
+  attr(res, "method") <- "cosine"
+  return(res)
+}
+
+result <- pvclust(Boston, method.dist=cosine, nboot=100)
+plot(result)
+
+## Not run: 
+### parallel computation
+result.par <- pvclust(Boston, nboot=1000, parallel=TRUE)
+plot(result.par)
+
+## End(Not run)
+
+
+
+################################################################################
+
+install.packages("ampir")
+
+library(ampir)
+
+my_protein_df <- read_faa(system.file("extdata/little_test.fasta", package = "ampir"))
+
+my_prediction <- predict_amps(my_protein_df, model = "precursor")
+
+my_predicted_amps <- my_protein_df[my_prediction$prob_AMP > 0.8,]
+
+df_to_faa(my_predicted_amps, tempfile("my_predicted_amps.fasta", tempdir()))
+
+################################################################################
+
+
+
+
+
+
+
+
+
 
