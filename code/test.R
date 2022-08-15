@@ -689,4 +689,18 @@ vemurafenib_ds <- parse_gctx(ds_path, cid=idx)
 col_ids <- col_meta$id[idx]
 vemurafenib_ds2 <- parse_gctx(ds_path, cid=col_ids)
 
+x <- rnorm(50)
+y <- runif(30)
 
+ks.test(x, y)
+
+ks.test(y, "punif")
+
+ks.test(x, "pnorm")
+
+x <- x + rnorm(50, 0, 10^-8)
+
+x[2] <- x[2] + 0.000000001
+
+
+library(spgs)
