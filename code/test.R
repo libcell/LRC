@@ -634,12 +634,59 @@ df_to_faa(my_predicted_amps, tempfile("my_predicted_amps.fasta", tempdir()))
 
 ################################################################################
 
+library(cmapR)
 
+# access the data matrix
+m <- mat(ds)
 
+# access the row and column metadata
+rdesc <- meta(ds, dimension = "row")
+cdesc <- meta(ds, dimension = "column")
 
+# access the row and column ids
+rid <- ids(ds, dimension = "row")
+cid <- ids(ds, dimension = "column")
 
+# update the matrix data to set some values to zero
+# note that the updated matrix must be the of the same dimensions as 
+# the current matrix
+m[1:10, 1:10] <- 0
+mat(ds) <- m
 
+# replace row and column metadata
+meta(ds, dimension = "row") <- data.frame(x=sample(letters, nrow(m),
+                                                   replace=TRUE))
+meta(ds, dimension = "column") <- data.frame(x=sample(letters, ncol(m),
+                                                      replace=TRUE))
 
+# replace row and column ids
+ids(ds, dimension = "row") <- as.character(seq_len(nrow(m)))
+ids(ds, dimension = "column") <- as.character(seq_len(ncol(m)))
 
+# and let's look at the modified object
+ds
+
+# create a variable to store the path to the GCTX file
+# here we'll use a file that's internal to the cmapR package, but
+# in practice this could be any valid path to a GCT or GCTX file
+ds_path <- system.file("extdata", "modzs_n25x50.gctx", package="cmapR")
+my_ds <- parse_gctx(ds_path)
+my_ds
+
+# read just the first 10 columns, using numeric indices
+(my_ds_10_columns <- parse_gctx(ds_path, cid=1:10))
+
+# read the column metadata
+col_meta <- read_gctx_meta(ds_path, dim="col")
+
+# figure out which signatures correspond to vorinostat by searching the 'pert_iname' column
+idx <- which(col_meta$pert_iname=="vemurafenib")
+
+# read only those columns from the GCTX file by using the 'cid' parameter
+vemurafenib_ds <- parse_gctx(ds_path, cid=idx)
+
+# get a vector of character ids, using the id column in col_meta
+col_ids <- col_meta$id[idx]
+vemurafenib_ds2 <- parse_gctx(ds_path, cid=col_ids)
 
 
