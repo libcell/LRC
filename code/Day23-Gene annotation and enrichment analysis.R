@@ -47,17 +47,22 @@ colnames(design) <- c("Asthma", "Asthma(1)_vs_Control(0)")
 # ii) Considering original two estimates plus difference between two groups.
 
 library(limma)
+# fitting a linear model
 fit <- lmFit(finalGEM, design)
+# carried out eBayes statistics
 fit <- eBayes(fit)
+# showing the results. 
 res <-
   topTable(fit,
            coef = "Asthma(1)_vs_Control(0)",
            adjust = "BH",
-           number = 100)
-
-tail(res)
+           number = nrow(finalGEM))
 
 res <- res[abs(res$logFC) > 0.5 & res$adj.P.Val < 0.05, ]
+
+# log2(FC) > 0.5, FC > 1.4 | FC < 1/2
+
+dim(res)
 
 degs <- res$ID
 
@@ -103,6 +108,7 @@ degs <- xx[degs]
 
 degs <- unlist(degs)
 
+class(degs)
 
 ### ****************************************************************************
 ### Step-02. GO Enrichment Analysis. 
@@ -125,7 +131,7 @@ ego <- enrichGO(
   gene          = gene,
   keyType = "ENTREZID", # 默认为ENTREZID, 该参数的取值可以参考keytypes(org.Hs.eg.db)的结果
   OrgDb         = org.Hs.eg.db, # 指定该物种对应的org包的名字
-  ont           = "CC", # 代表GO的3大类别，BP, CC, MF
+  ont           = "MF", # 代表GO的3大类别，BP, CC, MF
   pAdjustMethod = "BH", # 指定多重假设检验矫正的方法
   pvalueCutoff  = 0.01, # 指定对应的阈值
   qvalueCutoff  = 0.05,
